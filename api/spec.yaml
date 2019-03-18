@@ -1,0 +1,26 @@
+swagger: "2.0"
+info:
+  title: Spy API
+  version: 1.0.0
+schemes:
+  - https
+paths:
+  /ourell/bbinput:
+    post:
+      summary: TODO
+      description: TODO
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+
+  /ourell/bboutput:
+    get:
+      summary: TODO
+      description: TODO
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
