@@ -1,6 +1,6 @@
 package main
 
-import "github.com/alexandear/gps-spy/cmd"
+import "github.com/alexandear/spy-api/cmd"
 
 func main() {
 	cmd.Execute()

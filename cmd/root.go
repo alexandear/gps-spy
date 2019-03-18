@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/alexandear/gps-spy/cmd/server"
+	"github.com/alexandear/spy-api/cmd/server"
 	"github.com/spf13/cobra"
 )
 

@@ -1,0 +1,10 @@
+.dockerignore
+.git
+.gitignore
+.gitattributes
+Dockerfile
+Gopkg.lock
+Gopkg.toml
+bin/
+*.md
+.idea
