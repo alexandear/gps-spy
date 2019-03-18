@@ -25,7 +25,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"github.com/alexandear/gps-spy/internal/restapi/operations"
+	"github.com/devchallenge/spy-api/internal/restapi/operations"
 )
 
 const (

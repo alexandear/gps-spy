@@ -43,11 +43,11 @@ func init() {
     },
     "/ourell/bboutput": {
       "get": {
-        "description": "Optional extended description in Markdown.",
+        "description": "TODO",
         "produces": [
           "application/json"
         ],
-        "summary": "Returns a list of users.",
+        "summary": "TODO",
         "responses": {
           "200": {
             "description": "OK"
@@ -83,11 +83,11 @@ func init() {
     },
     "/ourell/bboutput": {
       "get": {
-        "description": "Optional extended description in Markdown.",
+        "description": "TODO",
         "produces": [
           "application/json"
         ],
-        "summary": "Returns a list of users.",
+        "summary": "TODO",
         "responses": {
           "200": {
             "description": "OK"

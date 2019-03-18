@@ -31,9 +31,9 @@ func NewGetOurellBboutput(ctx *middleware.Context, handler GetOurellBboutputHand
 
 /*GetOurellBboutput swagger:route GET /ourell/bboutput getOurellBboutput
 
-Returns a list of users.
+TODO
 
-Optional extended description in Markdown.
+TODO
 
 */
 type GetOurellBboutput struct {

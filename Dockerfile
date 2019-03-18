@@ -1,7 +1,7 @@
 FROM golang:alpine as builder
 ARG PACKAGE_NAME=spy-api
 
-WORKDIR ./src/github.com/alexandear/${PACKAGE_NAME}
+WORKDIR ./src/github.com/devchallenge/${PACKAGE_NAME}
 
 COPY ./main.go ./
 COPY ./vendor ./vendor

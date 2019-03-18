@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/alexandear/spy-api/cmd/server"
+	"github.com/devchallenge/spy-api/cmd/server"
 	"github.com/spf13/cobra"
 )
 

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/alexandear/spy-api/cmd"
+import "github.com/devchallenge/spy-api/cmd"
 
 func main() {
 	cmd.Execute()
