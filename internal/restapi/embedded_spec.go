@@ -26,8 +26,9 @@ func init() {
     "title": "Spy API",
     "version": "1.0.0"
   },
+  "basePath": "/ourell",
   "paths": {
-    "/ourell/bbinput": {
+    "/bbinput": {
       "post": {
         "description": "TODO",
         "produces": [
@@ -41,7 +42,7 @@ func init() {
         }
       }
     },
-    "/ourell/bboutput": {
+    "/bboutput": {
       "get": {
         "description": "TODO",
         "produces": [
@@ -66,8 +67,9 @@ func init() {
     "title": "Spy API",
     "version": "1.0.0"
   },
+  "basePath": "/ourell",
   "paths": {
-    "/ourell/bbinput": {
+    "/bbinput": {
       "post": {
         "description": "TODO",
         "produces": [
@@ -81,7 +83,7 @@ func init() {
         }
       }
     },
-    "/ourell/bboutput": {
+    "/bboutput": {
       "get": {
         "description": "TODO",
         "produces": [

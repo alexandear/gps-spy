@@ -10,7 +10,7 @@ import (
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
 
-	"github.com/alexandear/gps-spy/internal/restapi/operations"
+	"github.com/devchallenge/spy-api/internal/restapi/operations"
 )
 
 //go:generate swagger generate server --target ../internal --name  --spec ../api/spec.yaml --exclude-main
@@ -33,11 +33,11 @@ func configureAPI(api *operations.SpyAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.GetOurellBboutputHandler = operations.GetOurellBboutputHandlerFunc(func(params operations.GetOurellBboutputParams) middleware.Responder {
-		return middleware.NotImplemented("operation .GetOurellBboutput has not yet been implemented")
+	api.GetBboutputHandler = operations.GetBboutputHandlerFunc(func(params operations.GetBboutputParams) middleware.Responder {
+		return middleware.NotImplemented("operation .GetBboutput has not yet been implemented")
 	})
-	api.PostOurellBbinputHandler = operations.PostOurellBbinputHandlerFunc(func(params operations.PostOurellBbinputParams) middleware.Responder {
-		return middleware.NotImplemented("operation .PostOurellBbinput has not yet been implemented")
+	api.PostBbinputHandler = operations.PostBbinputHandlerFunc(func(params operations.PostBbinputParams) middleware.Responder {
+		return middleware.NotImplemented("operation .PostBbinput has not yet been implemented")
 	})
 
 	api.ServerShutdown = func() {}

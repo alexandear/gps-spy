@@ -37,11 +37,11 @@ func NewSpyAPI(spec *loads.Document) *SpyAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		GetOurellBboutputHandler: GetOurellBboutputHandlerFunc(func(params GetOurellBboutputParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetOurellBboutput has not yet been implemented")
+		GetBboutputHandler: GetBboutputHandlerFunc(func(params GetBboutputParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetBboutput has not yet been implemented")
 		}),
-		PostOurellBbinputHandler: PostOurellBbinputHandlerFunc(func(params PostOurellBbinputParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostOurellBbinput has not yet been implemented")
+		PostBbinputHandler: PostBbinputHandlerFunc(func(params PostBbinputParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostBbinput has not yet been implemented")
 		}),
 	}
 }
@@ -74,10 +74,10 @@ type SpyAPI struct {
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
 
-	// GetOurellBboutputHandler sets the operation handler for the get ourell bboutput operation
-	GetOurellBboutputHandler GetOurellBboutputHandler
-	// PostOurellBbinputHandler sets the operation handler for the post ourell bbinput operation
-	PostOurellBbinputHandler PostOurellBbinputHandler
+	// GetBboutputHandler sets the operation handler for the get bboutput operation
+	GetBboutputHandler GetBboutputHandler
+	// PostBbinputHandler sets the operation handler for the post bbinput operation
+	PostBbinputHandler PostBbinputHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -141,12 +141,12 @@ func (o *SpyAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.GetOurellBboutputHandler == nil {
-		unregistered = append(unregistered, "GetOurellBboutputHandler")
+	if o.GetBboutputHandler == nil {
+		unregistered = append(unregistered, "GetBboutputHandler")
 	}
 
-	if o.PostOurellBbinputHandler == nil {
-		unregistered = append(unregistered, "PostOurellBbinputHandler")
+	if o.PostBbinputHandler == nil {
+		unregistered = append(unregistered, "PostBbinputHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -250,12 +250,12 @@ func (o *SpyAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/ourell/bboutput"] = NewGetOurellBboutput(o.context, o.GetOurellBboutputHandler)
+	o.handlers["GET"]["/bboutput"] = NewGetBboutput(o.context, o.GetBboutputHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/ourell/bbinput"] = NewPostOurellBbinput(o.context, o.PostOurellBbinputHandler)
+	o.handlers["POST"]["/bbinput"] = NewPostBbinput(o.context, o.PostBbinputHandler)
 
 }
 
