@@ -1,7 +1,5 @@
 sudo: false
 
-go_import_path: github.com/alexandear/spy-api
-
 language: go
 
 git:
@@ -10,7 +8,10 @@ git:
 go:
   - 1.12.x
 
-install: true
+install:
+  - cd ../..
+  - mkdir devchallenge
+  - mv alexandear/spy-api devchallenge/spy-api
 
 services:
   docker
