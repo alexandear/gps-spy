@@ -12,6 +12,7 @@ install:
   - cd ../..
   - mkdir devchallenge
   - mv alexandear/spy-api devchallenge/spy-api
+  - cd devchallenge/spy-api
 
 services:
   docker
