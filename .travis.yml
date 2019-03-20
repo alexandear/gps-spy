@@ -1,15 +1,26 @@
+sudo: false
+
+go_import_path: github.com/alexandear/spy-api
+
 language: go
+
+git:
+  depth: 1
 
 go:
   - 1.12.x
+
+install: true
 
 services:
   docker
 
 before_script:
-  - go get -v github.com/alexandear/spy-api
-
-script:
   - make build
   - make test
   - make docker
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
