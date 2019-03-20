@@ -8,6 +8,7 @@ git:
 go:
   - 1.12.x
 
+# workaround to hide repo author from the code
 install:
   - cd ../..
   - mkdir devchallenge
@@ -20,6 +21,8 @@ services:
 before_script:
   - make build
   - make test
+
+script:
   - make docker
 
 notifications:
