@@ -1,19 +1,19 @@
 FROM golang:alpine as builder
 ARG PACKAGE_NAME=spy-api
+ARG BIN_DIR=/usr/local/bin
 
 WORKDIR ./src/github.com/devchallenge/${PACKAGE_NAME}
 
 COPY ./main.go ./
+COPY ./scripts ./scripts
 COPY ./vendor ./vendor
 COPY ./cmd ./cmd
 COPY ./internal ./internal
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o ${PACKAGE_NAME} . && \
-    cp ${PACKAGE_NAME} /usr/local/bin/ && \
-    rm -rf /go/src/github.com
+RUN . ./scripts/build.sh && cp ./bin/${PACKAGE_NAME} ${BIN_DIR} && rm -rf /go/src/github.com
 
 FROM scratch
-COPY --from=builder /usr/local/bin/${PACKAGE_NAME} /usr/local/bin/${PACKAGE_NAME}
+COPY --from=builder ${BIN_DIR}/${PACKAGE_NAME} ${BIN_DIR}/${PACKAGE_NAME}
 
 ENV BIND 0.0.0.0:80
 EXPOSE 80
