@@ -1,8 +1,3 @@
-BASEPATH = $(shell pwd)
-export PATH := $(BASEPATH)/bin:$(PATH)
-
-.PHONY: all clean default format help test
-
 default: clean build test
 
 help:
@@ -22,14 +17,17 @@ help:
 	@echo 'Targets run by default are: clean build test'
 	@echo ''
 
-PKGS        = $(shell go list ./... | grep -v /vendor)
-SCRIPTS_DIR = ./scripts
+.PHONY: all clean default build format help test
+
+PKGS = $(shell go list ./... | grep -v /vendor)
+
+IMAGE = spy-api
 
 all: clean swagger dep format build test docker
 
 build:
 	@echo build
-	@. $(SCRIPTS_DIR)/build.sh
+	@CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o ./bin/spy-api .
 
 clean:
 	@echo clean
@@ -49,8 +47,10 @@ dep:
 
 docker:
 	@echo docker
-	@. $(SCRIPTS_DIR)/docker.sh
+	@docker build -t $(IMAGE) . -f Dockerfile
+	@docker run --rm -ti $(IMAGE)
 
 swagger:
 	@echo swagger
-	@. $(SCRIPTS_DIR)/swagger.sh
+	@rm -rf ./internal/restapi
+	@swagger generate server -f ./api/spec.yaml -t ./internal --exclude-main

@@ -1,16 +1,18 @@
 FROM golang:alpine as builder
+
+RUN apk add --no-cache make
+
 ARG PACKAGE_NAME=spy-api
 ARG BIN_DIR=/usr/local/bin
 
 WORKDIR ./src/github.com/devchallenge/${PACKAGE_NAME}
 
-COPY ./main.go ./
-COPY ./scripts ./scripts
+COPY main.go Makefile ./
 COPY ./vendor ./vendor
 COPY ./cmd ./cmd
 COPY ./internal ./internal
 
-RUN . ./scripts/build.sh && cp ./bin/${PACKAGE_NAME} ${BIN_DIR} && rm -rf /go/src/github.com
+RUN make build && cp ./bin/${PACKAGE_NAME} ${BIN_DIR} && rm -rf /go/src/github.com
 
 FROM scratch
 COPY --from=builder ${BIN_DIR}/${PACKAGE_NAME} ${BIN_DIR}/${PACKAGE_NAME}

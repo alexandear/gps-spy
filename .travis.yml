@@ -12,7 +12,7 @@ go:
 install:
   - cd ../..
   - mkdir devchallenge
-  - mv alexandear/spy-api devchallenge/spy-api
+  - mv $TRAVIS_REPO_SLUG devchallenge/spy-api
   - cd devchallenge/spy-api
 
 services:
