@@ -1,12 +1,13 @@
 language: go
 
 go:
-  - 1.10.x
-  - 1.11.x
   - 1.12.x
 
 services:
   docker
+
+before_script:
+  - go get -v github.com/alexandear/spy-api
 
 script:
   - make build
