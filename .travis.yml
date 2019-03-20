@@ -18,11 +18,8 @@ install:
 services:
   docker
 
-before_script:
-  - make build
-  - make test
-
 script:
+  - make test
   - make docker
 
 notifications:
