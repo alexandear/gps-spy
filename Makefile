@@ -54,7 +54,10 @@ dep:
 docker:
 	@echo docker
 	@docker build -t $(IMAGE) . -f Dockerfile
-	@docker run --rm -ti $(IMAGE)
+
+docker-run:
+	@echo docker run
+	@docker run --rm -ti -p 8080:80 $(IMAGE)
 
 swagger:
 	@echo swagger

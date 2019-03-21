@@ -17,7 +17,7 @@ RUN make build_static && cp ./bin/${PACKAGE_NAME} ${BIN_DIR} && rm -rf /go/src/g
 FROM scratch
 COPY --from=builder ${BIN_DIR}/${PACKAGE_NAME} ${BIN_DIR}/${PACKAGE_NAME}
 
-ENV BIND 0.0.0.0:80
 EXPOSE 80
+ENV PORT 80
 
-ENTRYPOINT ["spy-api"]
+ENTRYPOINT ["spy-api", "server"]
