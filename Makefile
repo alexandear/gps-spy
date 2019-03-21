@@ -6,6 +6,7 @@ help:
 	@echo 'Available targets are:'
 	@echo ''
 	@echo '    build              Compile packages and dependencies.'
+	@echo '    build_static       Compile packages and dependencies to static.'
 	@echo '    clean              Remove binary.'
 	@echo '    dep                Download and install build time dependencies.'
 	@echo '    format             Run gofmt on package sources.'
@@ -21,13 +22,18 @@ help:
 
 PKGS = $(shell go list ./... | grep -v /vendor)
 
-IMAGE = spy-api
+BINARY = ./bin/spy-api
+IMAGE  = spy-api
 
 all: clean swagger dep format build test docker
 
 build:
 	@echo build
-	@CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o ./bin/spy-api .
+	@go build -o $(BINARY)
+
+build_static:
+	@echo build static
+	@CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o $(BINARY) .
 
 clean:
 	@echo clean
@@ -53,4 +59,4 @@ docker:
 swagger:
 	@echo swagger
 	@rm -rf ./internal/restapi
-	@swagger generate server -f ./api/spec.yaml -t ./internal --exclude-main
+	@swagger generate server -f ./api/spec.yaml -t ./internal --exclude-main --flag-strategy pflag

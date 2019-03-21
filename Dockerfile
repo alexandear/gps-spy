@@ -12,7 +12,7 @@ COPY ./vendor ./vendor
 COPY ./cmd ./cmd
 COPY ./internal ./internal
 
-RUN make build && cp ./bin/${PACKAGE_NAME} ${BIN_DIR} && rm -rf /go/src/github.com
+RUN make build_static && cp ./bin/${PACKAGE_NAME} ${BIN_DIR} && rm -rf /go/src/github.com
 
 FROM scratch
 COPY --from=builder ${BIN_DIR}/${PACKAGE_NAME} ${BIN_DIR}/${PACKAGE_NAME}

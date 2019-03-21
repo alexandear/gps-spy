@@ -4,7 +4,7 @@
 Package restapi Spy API
 
     Schemes:
-      https
+      http
     Host: localhost
     BasePath: /ourell
     Version: 1.0.0

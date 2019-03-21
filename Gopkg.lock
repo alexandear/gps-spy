@@ -173,6 +173,14 @@
   version = "v1.1.2"
 
 [[projects]]
+  digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
+
+[[projects]]
   digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
   name = "github.com/spf13/cobra"
   packages = ["."]
@@ -245,6 +253,7 @@
     "github.com/go-openapi/strfmt",
     "github.com/go-openapi/swag",
     "github.com/jessevdk/go-flags",
+    "github.com/pkg/errors",
     "github.com/spf13/cobra",
     "golang.org/x/net/netutil",
   ]
