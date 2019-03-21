@@ -17,7 +17,7 @@ var Cmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 		if err != nil {
-			return errors.Wrap(err, "failed to embeded spec")
+			return errors.Wrap(err, "failed to embedded spec")
 		}
 
 		cmd.Long = swaggerSpec.Spec().Info.Description
