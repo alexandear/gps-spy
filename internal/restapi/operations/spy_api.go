@@ -40,8 +40,8 @@ func NewSpyAPI(spec *loads.Document) *SpyAPI {
 		GetBboutputHandler: GetBboutputHandlerFunc(func(params GetBboutputParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetBboutput has not yet been implemented")
 		}),
-		PostBbinputHandler: PostBbinputHandlerFunc(func(params PostBbinputParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostBbinput has not yet been implemented")
+		AddLocationHandler: AddLocationHandlerFunc(func(params AddLocationParams) middleware.Responder {
+			return middleware.NotImplemented("operation AddLocation has not yet been implemented")
 		}),
 	}
 }
@@ -76,8 +76,8 @@ type SpyAPI struct {
 
 	// GetBboutputHandler sets the operation handler for the get bboutput operation
 	GetBboutputHandler GetBboutputHandler
-	// PostBbinputHandler sets the operation handler for the post bbinput operation
-	PostBbinputHandler PostBbinputHandler
+	// AddLocationHandler sets the operation handler for the add location operation
+	AddLocationHandler AddLocationHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -145,8 +145,8 @@ func (o *SpyAPI) Validate() error {
 		unregistered = append(unregistered, "GetBboutputHandler")
 	}
 
-	if o.PostBbinputHandler == nil {
-		unregistered = append(unregistered, "PostBbinputHandler")
+	if o.AddLocationHandler == nil {
+		unregistered = append(unregistered, "AddLocationHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -255,7 +255,7 @@ func (o *SpyAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/bbinput"] = NewPostBbinput(o.context, o.PostBbinputHandler)
+	o.handlers["POST"]["/bbinput"] = NewAddLocation(o.context, o.AddLocationHandler)
 
 }
 

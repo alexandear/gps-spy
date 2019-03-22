@@ -12,6 +12,7 @@ paths:
       summary: Accepts GPS coordinates from the mobile and saves to database
       consumes:
         - application/json
+      operationId: addLocation
       parameters:
         - in: body
           name: body

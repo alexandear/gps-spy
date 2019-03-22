@@ -35,6 +35,7 @@ func init() {
           "application/json"
         ],
         "summary": "Accepts GPS coordinates from the mobile and saves to database",
+        "operationId": "addLocation",
         "parameters": [
           {
             "name": "body",
@@ -129,6 +130,7 @@ func init() {
           "application/json"
         ],
         "summary": "Accepts GPS coordinates from the mobile and saves to database",
+        "operationId": "addLocation",
         "parameters": [
           {
             "name": "body",

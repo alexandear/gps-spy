@@ -7,8 +7,8 @@ ARG BIN_DIR=/usr/local/bin
 
 WORKDIR ./src/github.com/devchallenge/${PACKAGE_NAME}
 
-COPY main.go Makefile ./
 COPY ./vendor ./vendor
+COPY main.go Makefile ./
 COPY ./cmd ./cmd
 COPY ./internal ./internal
 

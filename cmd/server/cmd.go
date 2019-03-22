@@ -5,6 +5,7 @@ import (
 
 	"github.com/devchallenge/spy-api/internal/restapi"
 	"github.com/devchallenge/spy-api/internal/restapi/operations"
+	"github.com/devchallenge/spy-api/internal/service/handler"
 	"github.com/go-openapi/loads"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -33,7 +34,7 @@ var Cmd = &cobra.Command{
 			}
 		}()
 
-		server.ConfigureAPI()
+		handler.New().ConfigureHandlers(api)
 		if err := server.Serve(); err != nil {
 			return errors.Wrap(err, "failed to serve")
 		}

@@ -62,4 +62,5 @@ docker-run:
 swagger:
 	@echo swagger
 	@rm -rf ./internal/restapi
+	@rm -rf ./internal/models
 	@swagger generate server -f ./api/spec.yaml -t ./internal --exclude-main --flag-strategy pflag
