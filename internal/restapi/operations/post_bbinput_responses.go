@@ -34,3 +34,27 @@ func (o *PostBbinputOK) WriteResponse(rw http.ResponseWriter, producer runtime.P
 
 	rw.WriteHeader(200)
 }
+
+// PostBbinputInternalServerErrorCode is the HTTP code returned for type PostBbinputInternalServerError
+const PostBbinputInternalServerErrorCode int = 500
+
+/*PostBbinputInternalServerError General server error
+
+swagger:response postBbinputInternalServerError
+*/
+type PostBbinputInternalServerError struct {
+}
+
+// NewPostBbinputInternalServerError creates PostBbinputInternalServerError with default headers values
+func NewPostBbinputInternalServerError() *PostBbinputInternalServerError {
+
+	return &PostBbinputInternalServerError{}
+}
+
+// WriteResponse to the client
+func (o *PostBbinputInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(500)
+}

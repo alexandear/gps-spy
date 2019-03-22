@@ -23,6 +23,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
+    "description": "Monitoring for the mobile phones' moves",
     "title": "Spy API",
     "version": "1.0.0"
   },
@@ -30,14 +31,66 @@ func init() {
   "paths": {
     "/bbinput": {
       "post": {
-        "description": "TODO",
-        "produces": [
+        "consumes": [
           "application/json"
         ],
-        "summary": "TODO",
+        "summary": "Accepts GPS coordinates from the mobile and saves to database",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "number",
+                "imei",
+                "coordinates"
+              ],
+              "properties": {
+                "coordinates": {
+                  "description": "GPS coordinates of the phone's location",
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "format": "float"
+                  }
+                },
+                "imei": {
+                  "description": "Device identificator",
+                  "type": "string"
+                },
+                "ip": {
+                  "description": "Optional IP address",
+                  "type": "string"
+                },
+                "number": {
+                  "description": "Phone",
+                  "type": "string"
+                },
+                "timestamp": {
+                  "description": "EET timestamp in \"YYYY/MM/DD-hh:mm:ss\" format",
+                  "type": "string"
+                }
+              },
+              "example": {
+                "coordinates": [
+                  22.1832284135991,
+                  60.4538416572538
+                ],
+                "imei": "502507345219189",
+                "ip": "35.25.21.123",
+                "number": "+380991926482",
+                "timestamp": "2019/03/22-15:50:20"
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "General server error"
           }
         }
       }
@@ -64,6 +117,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
+    "description": "Monitoring for the mobile phones' moves",
     "title": "Spy API",
     "version": "1.0.0"
   },
@@ -71,14 +125,66 @@ func init() {
   "paths": {
     "/bbinput": {
       "post": {
-        "description": "TODO",
-        "produces": [
+        "consumes": [
           "application/json"
         ],
-        "summary": "TODO",
+        "summary": "Accepts GPS coordinates from the mobile and saves to database",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "number",
+                "imei",
+                "coordinates"
+              ],
+              "properties": {
+                "coordinates": {
+                  "description": "GPS coordinates of the phone's location",
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "format": "float"
+                  }
+                },
+                "imei": {
+                  "description": "Device identificator",
+                  "type": "string"
+                },
+                "ip": {
+                  "description": "Optional IP address",
+                  "type": "string"
+                },
+                "number": {
+                  "description": "Phone",
+                  "type": "string"
+                },
+                "timestamp": {
+                  "description": "EET timestamp in \"YYYY/MM/DD-hh:mm:ss\" format",
+                  "type": "string"
+                }
+              },
+              "example": {
+                "coordinates": [
+                  22.1832284135991,
+                  60.4538416572538
+                ],
+                "imei": "502507345219189",
+                "ip": "35.25.21.123",
+                "number": "+380991926482",
+                "timestamp": "2019/03/22-15:50:20"
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "General server error"
           }
         }
       }

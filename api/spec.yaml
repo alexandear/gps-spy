@@ -1,20 +1,56 @@
 swagger: "2.0"
 info:
   title: Spy API
-  version: 1.0.0
+  version: "1.0.0"
+  description: Monitoring for the mobile phones' moves
 basePath: /ourell
 schemes:
   - http
 paths:
   /bbinput:
     post:
-      summary: TODO
-      description: TODO
-      produces:
+      summary: Accepts GPS coordinates from the mobile and saves to database
+      consumes:
         - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            example:
+              number: "+380991926482"
+              ip: "35.25.21.123"
+              imei: "502507345219189"
+              timestamp: "2019/03/22-15:50:20"
+              coordinates: [22.1832284135991, 60.4538416572538]
+            properties:
+              number:
+                type: string
+                description: Phone
+              imei:
+                type: string
+                description: Device identificator
+              ip:
+                type: string
+                description: Optional IP address
+              timestamp:
+                type: string
+                description: EET timestamp in "YYYY/MM/DD-hh:mm:ss" format
+              coordinates:
+                type: array
+                description: GPS coordinates of the phone's location
+                items:
+                  type: number
+                  format: float
+            required:
+              - number
+              - imei
+              - coordinates
       responses:
         200:
           description: OK
+        500:
+          description: General server error
 
   /bboutput:
     get:
