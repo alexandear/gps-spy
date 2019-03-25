@@ -103,7 +103,7 @@ func init() {
             "description": "OK"
           },
           "400": {
-            "description": "Invalid arguments. Error codes:\n  - 2001 - wrong number\n  - 2002 - empty IMEI\n  - 2003 - bad coordinates\n  - 2004 - wrong timestamp format\n  - 2005 - wrong IP",
+            "description": "Invalid arguments.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -136,13 +136,9 @@ func init() {
     "Error": {
       "type": "object",
       "required": [
-        "code",
         "message"
       ],
       "properties": {
-        "code": {
-          "type": "integer"
-        },
         "message": {
           "type": "string"
         }
@@ -236,7 +232,7 @@ func init() {
             "description": "OK"
           },
           "400": {
-            "description": "Invalid arguments. Error codes:\n  - 2001 - wrong number\n  - 2002 - empty IMEI\n  - 2003 - bad coordinates\n  - 2004 - wrong timestamp format\n  - 2005 - wrong IP",
+            "description": "Invalid arguments.",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -269,13 +265,9 @@ func init() {
     "Error": {
       "type": "object",
       "required": [
-        "code",
         "message"
       ],
       "properties": {
-        "code": {
-          "type": "integer"
-        },
         "message": {
           "type": "string"
         }

@@ -61,14 +61,7 @@ paths:
         200:
           description: OK
         400:
-          description: >-
-            Invalid arguments.
-            Error codes:
-              - 2001 - wrong number
-              - 2002 - empty IMEI
-              - 2003 - bad coordinates
-              - 2004 - wrong timestamp format
-              - 2005 - wrong IP
+          description: Invalid arguments.
           schema:
             $ref: '#/definitions/Error'
         500:
@@ -91,10 +84,7 @@ definitions:
   Error:
     type: object
     properties:
-      code:
-        type: integer
       message:
         type: string
     required:
-      - code
       - message

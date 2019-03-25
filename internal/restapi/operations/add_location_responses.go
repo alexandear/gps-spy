@@ -40,12 +40,7 @@ func (o *AddLocationOK) WriteResponse(rw http.ResponseWriter, producer runtime.P
 // AddLocationBadRequestCode is the HTTP code returned for type AddLocationBadRequest
 const AddLocationBadRequestCode int = 400
 
-/*AddLocationBadRequest Invalid arguments. Error codes:
-  - 2001 - wrong number
-  - 2002 - empty IMEI
-  - 2003 - bad coordinates
-  - 2004 - wrong timestamp format
-  - 2005 - wrong IP
+/*AddLocationBadRequest Invalid arguments.
 
 swagger:response addLocationBadRequest
 */

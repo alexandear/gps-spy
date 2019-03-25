@@ -17,10 +17,6 @@ import (
 // swagger:model Error
 type Error struct {
 
-	// code
-	// Required: true
-	Code *int64 `json:"code"`
-
 	// message
 	// Required: true
 	Message *string `json:"message"`
@@ -30,10 +26,6 @@ type Error struct {
 func (m *Error) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateCode(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateMessage(formats); err != nil {
 		res = append(res, err)
 	}
@@ -41,15 +33,6 @@ func (m *Error) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Error) validateCode(formats strfmt.Registry) error {
-
-	if err := validate.Required("code", "body", m.Code); err != nil {
-		return err
-	}
-
 	return nil
 }
 
