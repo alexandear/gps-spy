@@ -37,9 +37,6 @@ func NewSpyAPI(spec *loads.Document) *SpyAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		GetBboutputHandler: GetBboutputHandlerFunc(func(params GetBboutputParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetBboutput has not yet been implemented")
-		}),
 		AddLocationHandler: AddLocationHandlerFunc(func(params AddLocationParams) middleware.Responder {
 			return middleware.NotImplemented("operation AddLocation has not yet been implemented")
 		}),
@@ -74,8 +71,6 @@ type SpyAPI struct {
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
 
-	// GetBboutputHandler sets the operation handler for the get bboutput operation
-	GetBboutputHandler GetBboutputHandler
 	// AddLocationHandler sets the operation handler for the add location operation
 	AddLocationHandler AddLocationHandler
 
@@ -139,10 +134,6 @@ func (o *SpyAPI) Validate() error {
 
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
-	}
-
-	if o.GetBboutputHandler == nil {
-		unregistered = append(unregistered, "GetBboutputHandler")
 	}
 
 	if o.AddLocationHandler == nil {
@@ -246,11 +237,6 @@ func (o *SpyAPI) initHandlerCache() {
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
-
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/bboutput"] = NewGetBboutput(o.context, o.GetBboutputHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)

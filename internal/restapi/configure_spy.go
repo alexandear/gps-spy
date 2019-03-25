@@ -33,9 +33,6 @@ func configureAPI(api *operations.SpyAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.GetBboutputHandler = operations.GetBboutputHandlerFunc(func(params operations.GetBboutputParams) middleware.Responder {
-		return middleware.NotImplemented("operation .GetBboutput has not yet been implemented")
-	})
 	api.AddLocationHandler = operations.AddLocationHandlerFunc(func(params operations.AddLocationParams) middleware.Responder {
 		return middleware.NotImplemented("operation .AddLocation has not yet been implemented")
 	})

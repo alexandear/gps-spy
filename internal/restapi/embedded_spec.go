@@ -116,20 +116,6 @@ func init() {
           }
         }
       }
-    },
-    "/bboutput": {
-      "get": {
-        "description": "TODO",
-        "produces": [
-          "application/json"
-        ],
-        "summary": "TODO",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -242,20 +228,6 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        }
-      }
-    },
-    "/bboutput": {
-      "get": {
-        "description": "TODO",
-        "produces": [
-          "application/json"
-        ],
-        "summary": "TODO",
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }

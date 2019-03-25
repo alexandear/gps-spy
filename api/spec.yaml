@@ -69,16 +69,6 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-  /bboutput:
-    get:
-      summary: TODO
-      description: TODO
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-
 definitions:
   # Schema for error response body
   Error:

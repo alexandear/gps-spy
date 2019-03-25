@@ -71,10 +71,6 @@ func newAddLocationServerError(err error) *operations.AddLocationInternalServerE
 	return operations.NewAddLocationInternalServerError().WithPayload(model.NewError(err.Error()))
 }
 
-func (h *Handler) GetBboutputHandler(params operations.GetBboutputParams) middleware.Responder {
-	return middleware.NotImplemented("this endpoint is not implemented yet")
-}
-
 func (h *Handler) ConfigureHandlers(api *operations.SpyAPI) {
 	api.AddLocationHandler = operations.AddLocationHandlerFunc(h.AddLocation)
 }
