@@ -35,7 +35,7 @@ func NewAddLocation(ctx *middleware.Context, handler AddLocationHandler) *AddLoc
 
 /*AddLocation swagger:route POST /bbinput addLocation
 
-Accepts GPS coordinates from the mobile and saves to database
+Accepts GPS coordinates from the mobile and saves them to the database
 
 */
 type AddLocation struct {
@@ -65,9 +65,9 @@ func (o *AddLocation) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 // swagger:model AddLocationBody
 type AddLocationBody struct {
 
-	// GPS coordinates of the phone's location
+	// coordinates
 	// Required: true
-	Coordinates []float32 `json:"coordinates"`
+	Coordinates *AddLocationParamsBodyCoordinates `json:"coordinates"`
 
 	// Device identificator
 	// Required: true
@@ -112,6 +112,15 @@ func (o *AddLocationBody) validateCoordinates(formats strfmt.Registry) error {
 		return err
 	}
 
+	if o.Coordinates != nil {
+		if err := o.Coordinates.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("body" + "." + "coordinates")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -144,6 +153,91 @@ func (o *AddLocationBody) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (o *AddLocationBody) UnmarshalBinary(b []byte) error {
 	var res AddLocationBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+// AddLocationParamsBodyCoordinates GPS coordinates of the phone's location
+// swagger:model AddLocationParamsBodyCoordinates
+type AddLocationParamsBodyCoordinates struct {
+
+	// Latitude in degrees
+	// Maximum: 90
+	// Minimum: -90
+	Latitude *float32 `json:"latitude,omitempty"`
+
+	// Longitude in degrees
+	// Maximum: 180
+	// Minimum: -180
+	Longitude *float32 `json:"longitude,omitempty"`
+}
+
+// Validate validates this add location params body coordinates
+func (o *AddLocationParamsBodyCoordinates) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateLatitude(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateLongitude(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *AddLocationParamsBodyCoordinates) validateLatitude(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Latitude) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("body"+"."+"coordinates"+"."+"latitude", "body", float64(*o.Latitude), -90, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("body"+"."+"coordinates"+"."+"latitude", "body", float64(*o.Latitude), 90, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *AddLocationParamsBodyCoordinates) validateLongitude(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Longitude) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("body"+"."+"coordinates"+"."+"longitude", "body", float64(*o.Longitude), -180, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("body"+"."+"coordinates"+"."+"longitude", "body", float64(*o.Longitude), 180, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *AddLocationParamsBodyCoordinates) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *AddLocationParamsBodyCoordinates) UnmarshalBinary(b []byte) error {
+	var res AddLocationParamsBodyCoordinates
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

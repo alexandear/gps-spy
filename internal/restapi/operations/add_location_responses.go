@@ -9,6 +9,8 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	models "github.com/devchallenge/spy-api/internal/models"
 )
 
 // AddLocationOKCode is the HTTP code returned for type AddLocationOK
@@ -35,6 +37,55 @@ func (o *AddLocationOK) WriteResponse(rw http.ResponseWriter, producer runtime.P
 	rw.WriteHeader(200)
 }
 
+// AddLocationBadRequestCode is the HTTP code returned for type AddLocationBadRequest
+const AddLocationBadRequestCode int = 400
+
+/*AddLocationBadRequest Invalid arguments. Error codes:
+  - 2001 - wrong number
+  - 2002 - empty IMEI
+  - 2003 - bad coordinates
+  - 2004 - wrong timestamp format
+  - 2005 - wrong IP
+
+swagger:response addLocationBadRequest
+*/
+type AddLocationBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewAddLocationBadRequest creates AddLocationBadRequest with default headers values
+func NewAddLocationBadRequest() *AddLocationBadRequest {
+
+	return &AddLocationBadRequest{}
+}
+
+// WithPayload adds the payload to the add location bad request response
+func (o *AddLocationBadRequest) WithPayload(payload *models.Error) *AddLocationBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the add location bad request response
+func (o *AddLocationBadRequest) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *AddLocationBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // AddLocationInternalServerErrorCode is the HTTP code returned for type AddLocationInternalServerError
 const AddLocationInternalServerErrorCode int = 500
 
@@ -43,6 +94,11 @@ const AddLocationInternalServerErrorCode int = 500
 swagger:response addLocationInternalServerError
 */
 type AddLocationInternalServerError struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewAddLocationInternalServerError creates AddLocationInternalServerError with default headers values
@@ -51,10 +107,25 @@ func NewAddLocationInternalServerError() *AddLocationInternalServerError {
 	return &AddLocationInternalServerError{}
 }
 
+// WithPayload adds the payload to the add location internal server error response
+func (o *AddLocationInternalServerError) WithPayload(payload *models.Error) *AddLocationInternalServerError {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the add location internal server error response
+func (o *AddLocationInternalServerError) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *AddLocationInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(500)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

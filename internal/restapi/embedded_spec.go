@@ -34,7 +34,7 @@ func init() {
         "consumes": [
           "application/json"
         ],
-        "summary": "Accepts GPS coordinates from the mobile and saves to database",
+        "summary": "Accepts GPS coordinates from the mobile and saves them to the database",
         "operationId": "addLocation",
         "parameters": [
           {
@@ -50,10 +50,22 @@ func init() {
               "properties": {
                 "coordinates": {
                   "description": "GPS coordinates of the phone's location",
-                  "type": "array",
-                  "items": {
-                    "type": "number",
-                    "format": "float"
+                  "type": "object",
+                  "properties": {
+                    "latitude": {
+                      "description": "Latitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 90,
+                      "minimum": -90
+                    },
+                    "longitude": {
+                      "description": "Longitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 180,
+                      "minimum": -180
+                    }
                   }
                 },
                 "imei": {
@@ -90,8 +102,17 @@ func init() {
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Invalid arguments. Error codes:\n  - 2001 - wrong number\n  - 2002 - empty IMEI\n  - 2003 - bad coordinates\n  - 2004 - wrong timestamp format\n  - 2005 - wrong IP",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
           "500": {
-            "description": "General server error"
+            "description": "General server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -107,6 +128,23 @@ func init() {
           "200": {
             "description": "OK"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
         }
       }
     }
@@ -129,7 +167,7 @@ func init() {
         "consumes": [
           "application/json"
         ],
-        "summary": "Accepts GPS coordinates from the mobile and saves to database",
+        "summary": "Accepts GPS coordinates from the mobile and saves them to the database",
         "operationId": "addLocation",
         "parameters": [
           {
@@ -145,10 +183,22 @@ func init() {
               "properties": {
                 "coordinates": {
                   "description": "GPS coordinates of the phone's location",
-                  "type": "array",
-                  "items": {
-                    "type": "number",
-                    "format": "float"
+                  "type": "object",
+                  "properties": {
+                    "latitude": {
+                      "description": "Latitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 90,
+                      "minimum": -90
+                    },
+                    "longitude": {
+                      "description": "Longitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 180,
+                      "minimum": -180
+                    }
                   }
                 },
                 "imei": {
@@ -185,8 +235,17 @@ func init() {
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Invalid arguments. Error codes:\n  - 2001 - wrong number\n  - 2002 - empty IMEI\n  - 2003 - bad coordinates\n  - 2004 - wrong timestamp format\n  - 2005 - wrong IP",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
           "500": {
-            "description": "General server error"
+            "description": "General server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -202,6 +261,23 @@ func init() {
           "200": {
             "description": "OK"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
         }
       }
     }

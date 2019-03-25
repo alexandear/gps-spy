@@ -24,6 +24,7 @@ PKGS = $(shell go list ./... | grep -v /vendor)
 
 BINARY = ./bin/spy-api
 IMAGE  = spy-api
+SPEC   = ./api/spec.yaml
 
 all: clean swagger dep format build test docker
 
@@ -63,4 +64,8 @@ swagger:
 	@echo swagger
 	@rm -rf ./internal/restapi
 	@rm -rf ./internal/models
-	@swagger generate server -f ./api/spec.yaml -t ./internal --exclude-main --flag-strategy pflag
+	@swagger generate server -f $(SPEC) -t ./internal --exclude-main --flag-strategy pflag -q
+
+doc:
+	@echo swagger doc
+	@swagger serve --flavor=swagger $(SPEC)

@@ -9,7 +9,7 @@ schemes:
 paths:
   /bbinput:
     post:
-      summary: Accepts GPS coordinates from the mobile and saves to database
+      summary: Accepts GPS coordinates from the mobile and saves them to the database
       consumes:
         - application/json
       operationId: addLocation
@@ -38,11 +38,21 @@ paths:
                 type: string
                 description: EET timestamp in "YYYY/MM/DD-hh:mm:ss" format
               coordinates:
-                type: array
                 description: GPS coordinates of the phone's location
-                items:
-                  type: number
-                  format: float
+                type: object
+                properties:
+                  longitude:
+                    description: Longitude in degrees
+                    type: number
+                    format: float
+                    minimum: -180
+                    maximum: 180
+                  latitude:
+                    description: Latitude in degrees
+                    type: number
+                    format: float
+                    minimum: -90
+                    maximum: 90
             required:
               - number
               - imei
@@ -50,8 +60,21 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: >-
+            Invalid arguments.
+            Error codes:
+              - 2001 - wrong number
+              - 2002 - empty IMEI
+              - 2003 - bad coordinates
+              - 2004 - wrong timestamp format
+              - 2005 - wrong IP
+          schema:
+            $ref: '#/definitions/Error'
         500:
           description: General server error
+          schema:
+            $ref: '#/definitions/Error'
 
   /bboutput:
     get:
@@ -62,3 +85,16 @@ paths:
       responses:
         200:
           description: OK
+
+definitions:
+  # Schema for error response body
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    required:
+      - code
+      - message
