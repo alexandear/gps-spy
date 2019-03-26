@@ -20,7 +20,7 @@ func NewLocation(number, imei string, longitude, latitude float32) (*Location, e
 		return nil, errors.New("number must be not empty")
 	}
 	if imei == "" {
-		return nil, errors.New("number must be not empty")
+		return nil, errors.New("IMEI must be not empty")
 	}
 	coordinate, err := NewCoordinate(longitude, latitude)
 	if err != nil {

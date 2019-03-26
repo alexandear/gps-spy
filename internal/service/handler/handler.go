@@ -4,10 +4,12 @@ import (
 	"net"
 	"time"
 
-	"github.com/devchallenge/spy-api/internal/restapi/operations"
-	"github.com/devchallenge/spy-api/internal/service/model"
 	"github.com/getfider/fider/app/pkg/errors"
 	"github.com/go-openapi/runtime/middleware"
+
+	"github.com/devchallenge/spy-api/internal/gen/models"
+	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
+	"github.com/devchallenge/spy-api/internal/model"
 )
 
 type Handler struct {
@@ -22,55 +24,61 @@ func New(storage Storage) *Handler {
 	return &Handler{storage: storage}
 }
 
-func (h *Handler) AddLocation(params operations.AddLocationParams) middleware.Responder {
+func (h *Handler) PostBbinputHandler(params operations.PostBbinputParams) middleware.Responder {
 	body := params.Body
 	if body.Number == nil {
-		return newAddLocationBadRequest("number is required")
+		return newPostBbinputBadRequest("number is required")
 	}
 	if body.Imei == nil {
-		return newAddLocationBadRequest("IMEI is required")
+		return newPostBbinputBadRequest("IMEI is required")
 	}
 	if body.Coordinates == nil {
-		return newAddLocationBadRequest("coordinates are required")
+		return newPostBbinputBadRequest("coordinates are required")
 	}
 	if body.Coordinates.Longitude == nil {
-		return newAddLocationBadRequest("longitude in coordinates is required")
+		return newPostBbinputBadRequest("longitude in coordinates is required")
 	}
 	if body.Coordinates.Latitude == nil {
-		return newAddLocationBadRequest("latitude in coordinates is required")
+		return newPostBbinputBadRequest("latitude in coordinates is required")
 	}
 	location, err := model.NewLocation(*body.Number, *body.Imei, *body.Coordinates.Longitude, *body.Coordinates.Latitude)
 	if err != nil {
-		return newAddLocationBadRequest(err.Error())
+		return newPostBbinputBadRequest(err.Error())
 	}
 	if body.IP != "" {
 		ip := net.ParseIP(body.IP)
 		if ip == nil {
-			return newAddLocationBadRequest("ip must be valid")
+			return newPostBbinputBadRequest("ip must be valid")
 		}
 		location.SetIP(ip)
 	}
 	if body.Timestamp != "" {
 		timestamp, err := time.Parse("2006/01/02-15:04:05", body.Timestamp)
 		if err != nil {
-			return newAddLocationBadRequest("timestamp must be in format 'YYYY/MM/DD-hh:mm:ss'")
+			return newPostBbinputBadRequest("timestamp must be in format 'YYYY/MM/DD-hh:mm:ss'")
 		}
 		location.SetTimestamp(timestamp)
 	}
 	if err := h.storage.SaveLocation(location); err != nil {
-		return newAddLocationServerError(errors.Wrap(err, "failed to save location"))
+		return newPostBbinputServerError(errors.Wrap(err, "failed to save location"))
 	}
-	return operations.NewAddLocationOK()
+	return operations.NewPostBbinputOK()
 }
 
-func newAddLocationBadRequest(message string) *operations.AddLocationBadRequest {
-	return operations.NewAddLocationBadRequest().WithPayload(model.NewError(message))
+func newPostBbinputBadRequest(message string) *operations.PostBbinputBadRequest {
+	return operations.NewPostBbinputBadRequest().WithPayload(newError(message))
 }
 
-func newAddLocationServerError(err error) *operations.AddLocationInternalServerError {
-	return operations.NewAddLocationInternalServerError().WithPayload(model.NewError(err.Error()))
+func newPostBbinputServerError(err error) *operations.PostBbinputInternalServerError {
+	return operations.NewPostBbinputInternalServerError().WithPayload(newError(err.Error()))
 }
 
 func (h *Handler) ConfigureHandlers(api *operations.SpyAPI) {
-	api.AddLocationHandler = operations.AddLocationHandlerFunc(h.AddLocation)
+	api.PostBbinputHandler = operations.PostBbinputHandlerFunc(h.PostBbinputHandler)
+}
+
+func newError(message string) *models.Error {
+	return &models.Error{
+		Message: &message,
+	}
 }

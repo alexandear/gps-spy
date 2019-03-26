@@ -3,14 +3,15 @@ package server
 import (
 	"log"
 
-	"github.com/devchallenge/spy-api/internal/restapi"
-	"github.com/devchallenge/spy-api/internal/restapi/operations"
-	"github.com/devchallenge/spy-api/internal/service/handler"
-	"github.com/devchallenge/spy-api/internal/storage"
 	"github.com/go-openapi/loads"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+
+	"github.com/devchallenge/spy-api/internal/gen/restapi"
+	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
+	"github.com/devchallenge/spy-api/internal/service/handler"
+	"github.com/devchallenge/spy-api/internal/storage"
 )
 
 var Cmd = &cobra.Command{

@@ -25,6 +25,7 @@ PKGS = $(shell go list ./... | grep -v /vendor)
 BINARY = ./bin/spy-api
 IMAGE  = spy-api
 SPEC   = ./api/spec.yaml
+GEN    = ./internal/gen
 
 all: clean swagger dep format build test docker
 
@@ -62,9 +63,9 @@ docker-run:
 
 swagger:
 	@echo swagger
-	@rm -rf ./internal/restapi
-	@rm -rf ./internal/models
-	@swagger generate server -f $(SPEC) -t ./internal --exclude-main --flag-strategy pflag -q
+	@rm -rf $(GEN)/models
+	@rm -rf $(GEN)/restapi
+	@swagger generate server -f $(SPEC) -t $(GEN) --exclude-main --flag-strategy pflag
 
 doc:
 	@echo swagger doc

@@ -5,10 +5,11 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/devchallenge/spy-api/internal/restapi/operations"
-	"github.com/devchallenge/spy-api/internal/service/model"
 	"github.com/icrowley/fake"
 	"github.com/stretchr/testify/require"
+
+	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
+	"github.com/devchallenge/spy-api/internal/model"
 )
 
 func TestHandler_AddLocation(t *testing.T) {
@@ -21,80 +22,80 @@ func TestHandler_AddLocation(t *testing.T) {
 
 	t.Run("when invalid arguments returns 400", func(t *testing.T) {
 		for name, tc := range map[string]struct {
-			body operations.AddLocationBody
+			body operations.PostBbinputBody
 		}{
 			"empty number": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number: nil,
 					Imei:   &imei,
-					Coordinates: &operations.AddLocationParamsBodyCoordinates{
+					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
 						Latitude:  &latitude,
 					},
 				},
 			},
 			"empty imei": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number: &number,
 					Imei:   nil,
-					Coordinates: &operations.AddLocationParamsBodyCoordinates{
+					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
 						Latitude:  &latitude,
 					},
 				},
 			},
 			"empty coordinates": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number:      &number,
 					Imei:        &imei,
 					Coordinates: nil,
 				},
 			},
 			"empty longitude": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number: &number,
 					Imei:   &imei,
-					Coordinates: &operations.AddLocationParamsBodyCoordinates{
+					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: nil,
 						Latitude:  &latitude,
 					},
 				},
 			},
 			"empty latitude": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number: &number,
 					Imei:   &imei,
-					Coordinates: &operations.AddLocationParamsBodyCoordinates{
+					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
 						Latitude:  nil,
 					},
 				},
 			},
 			"wrong longitude": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number: &number,
 					Imei:   &imei,
-					Coordinates: &operations.AddLocationParamsBodyCoordinates{
+					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &wrongLongitude,
 						Latitude:  &latitude,
 					},
 				},
 			},
 			"wrong latitude": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number: &number,
 					Imei:   &imei,
-					Coordinates: &operations.AddLocationParamsBodyCoordinates{
+					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
 						Latitude:  &wrongLatitude,
 					},
 				},
 			},
 			"wrong ip": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number: &number,
 					Imei:   &imei,
-					Coordinates: &operations.AddLocationParamsBodyCoordinates{
+					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
 						Latitude:  &latitude,
 					},
@@ -102,10 +103,10 @@ func TestHandler_AddLocation(t *testing.T) {
 				},
 			},
 			"wrong timestamp": {
-				body: operations.AddLocationBody{
+				body: operations.PostBbinputBody{
 					Number: &number,
 					Imei:   &imei,
-					Coordinates: &operations.AddLocationParamsBodyCoordinates{
+					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
 						Latitude:  &latitude,
 					},
@@ -116,15 +117,15 @@ func TestHandler_AddLocation(t *testing.T) {
 			t.Run(name, func(t *testing.T) {
 				h := New(&storageStub{})
 				httpReq := http.Request{}
-				params := operations.AddLocationParams{
+				params := operations.PostBbinputParams{
 					HTTPRequest: httpReq.WithContext(context.Background()),
 					Body:        tc.body,
 				}
 
-				resp := h.AddLocation(params)
+				resp := h.PostBbinputHandler(params)
 
 				require.NotNil(t, resp)
-				_, ok := resp.(*operations.AddLocationBadRequest)
+				_, ok := resp.(*operations.PostBbinputBadRequest)
 				require.True(t, ok)
 			})
 		}

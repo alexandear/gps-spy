@@ -12,7 +12,6 @@ paths:
       summary: Accepts GPS coordinates from the mobile and saves them to the database
       consumes:
         - application/json
-      operationId: addLocation
       parameters:
         - in: body
           name: body
@@ -61,7 +60,7 @@ paths:
         200:
           description: OK
         400:
-          description: Invalid arguments.
+          description: Invalid arguments
           schema:
             $ref: '#/definitions/Error'
         500:

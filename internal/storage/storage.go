@@ -1,8 +1,9 @@
 package storage
 
 import (
-	"github.com/devchallenge/spy-api/internal/service/model"
 	"github.com/pkg/errors"
+
+	"github.com/devchallenge/spy-api/internal/model"
 )
 
 type Storage struct {
