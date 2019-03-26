@@ -18,6 +18,7 @@ FROM scratch
 COPY --from=builder ${BIN_DIR}/${PACKAGE_NAME} ${BIN_DIR}/${PACKAGE_NAME}
 
 EXPOSE 80
+ENV HOST 0.0.0.0
 ENV PORT 80
 
 ENTRYPOINT ["spy-api", "server"]
