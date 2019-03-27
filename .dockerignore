@@ -8,3 +8,6 @@ Gopkg.toml
 bin/
 *.md
 .idea
+.travis.yml
+docker-compose.yaml
+README.md
