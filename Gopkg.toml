@@ -1,3 +1,7 @@
+required = [
+    "github.com/vektra/mockery/cmd/mockery",
+]
+
 [[constraint]]
   branch = "master"
   name = "golang.org/x/net"

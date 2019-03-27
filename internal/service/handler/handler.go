@@ -13,15 +13,17 @@ import (
 )
 
 type Handler struct {
-	storage Storage
+	gps GPS
 }
 
-type Storage interface {
-	SaveLocation(location *model.Location) error
+type GPS interface {
+	Add(phone model.Phone, coordinate model.Coordinate, timestamp time.Time) error
 }
 
-func New(storage Storage) *Handler {
-	return &Handler{storage: storage}
+func New(gps GPS) *Handler {
+	return &Handler{
+		gps: gps,
+	}
 }
 
 func (h *Handler) PostBbinputHandler(params operations.PostBbinputParams) middleware.Responder {
@@ -32,6 +34,16 @@ func (h *Handler) PostBbinputHandler(params operations.PostBbinputParams) middle
 	if body.Imei == nil {
 		return newPostBbinputBadRequest("IMEI is required")
 	}
+	ip := net.IP{}
+	if body.IP != "" {
+		if ip = net.ParseIP(body.IP); ip == nil {
+			return newPostBbinputBadRequest("ip must be valid")
+		}
+	}
+	phone, err := model.NewPhone(*body.Number, ip, *body.Imei)
+	if err != nil {
+		return newPostBbinputBadRequest(err.Error())
+	}
 	if body.Coordinates == nil {
 		return newPostBbinputBadRequest("coordinates are required")
 	}
@@ -41,28 +53,30 @@ func (h *Handler) PostBbinputHandler(params operations.PostBbinputParams) middle
 	if body.Coordinates.Latitude == nil {
 		return newPostBbinputBadRequest("latitude in coordinates is required")
 	}
-	location, err := model.NewLocation(*body.Number, *body.Imei, *body.Coordinates.Longitude, *body.Coordinates.Latitude)
+	coordinate, err := model.NewCoordinate(*body.Coordinates.Longitude, *body.Coordinates.Latitude)
 	if err != nil {
 		return newPostBbinputBadRequest(err.Error())
 	}
-	if body.IP != "" {
-		ip := net.ParseIP(body.IP)
-		if ip == nil {
-			return newPostBbinputBadRequest("ip must be valid")
-		}
-		location.SetIP(ip)
-	}
+	timestamp := time.Time{}
 	if body.Timestamp != "" {
-		timestamp, err := time.Parse("2006/01/02-15:04:05", body.Timestamp)
+		t, err := time.Parse("2006/01/02-15:04:05", body.Timestamp)
 		if err != nil {
 			return newPostBbinputBadRequest("timestamp must be in format 'YYYY/MM/DD-hh:mm:ss'")
 		}
-		location.SetTimestamp(timestamp)
+		loc, err := time.LoadLocation("Europe/Kiev")
+		if err != nil {
+			return newPostBbinputServerError(errors.Wrap(err, "failed to load location"))
+		}
+		timestamp = t.In(loc)
 	}
-	if err := h.storage.SaveLocation(location); err != nil {
-		return newPostBbinputServerError(errors.Wrap(err, "failed to save location"))
+	switch err := h.gps.Add(phone, coordinate, timestamp); errors.Cause(err) {
+	case nil:
+		return operations.NewPostBbinputOK()
+	case model.ErrInvalidArgument:
+		return newPostBbinputBadRequest(err.Error())
+	default:
+		return newPostBbinputServerError(err)
 	}
-	return operations.NewPostBbinputOK()
 }
 
 func newPostBbinputBadRequest(message string) *operations.PostBbinputBadRequest {

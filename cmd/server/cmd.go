@@ -1,15 +1,18 @@
 package server
 
 import (
+	"io"
 	"log"
 
 	"github.com/go-openapi/loads"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"github.com/tidwall/buntdb"
 
 	"github.com/devchallenge/spy-api/internal/gen/restapi"
 	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
+	"github.com/devchallenge/spy-api/internal/service/gps"
 	"github.com/devchallenge/spy-api/internal/service/handler"
 	"github.com/devchallenge/spy-api/internal/storage"
 )
@@ -28,20 +31,37 @@ var Cmd = &cobra.Command{
 		pflag.Parse()
 
 		api := operations.NewSpyAPI(swaggerSpec)
-		server := restapi.NewServer(api)
+		server := server{Server: restapi.NewServer(api)}
+		defer close(server)
 
-		defer func() {
-			if err := server.Shutdown(); err != nil {
-				log.Fatal(err)
-			}
-		}()
+		db, err := buntdb.Open(":memory:")
+		if err != nil {
+			return errors.Wrap(err, "failed to open buntdb in memory")
+		}
+		defer close(db)
 
-		storage := &storage.Storage{}
-		handler.New(storage).ConfigureHandlers(api)
+		storage := storage.New(db)
+		gps := gps.New(storage)
+		handler := handler.New(gps)
+		handler.ConfigureHandlers(api)
 		if err := server.Serve(); err != nil {
 			return errors.Wrap(err, "failed to serve")
 		}
 
 		return nil
 	},
+}
+
+type server struct {
+	*restapi.Server
+}
+
+func (s server) Close() error {
+	return s.Shutdown()
+}
+
+func close(closer io.Closer) {
+	if err := closer.Close(); err != nil {
+		log.Fatal(err)
+	}
 }

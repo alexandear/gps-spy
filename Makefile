@@ -70,3 +70,11 @@ swagger:
 doc:
 	@echo swagger doc
 	@swagger serve --flavor=swagger $(SPEC)
+
+generate:
+	@echo mock
+ifeq ("$(wildcard ./bin/mockery)","")
+	@echo build mockery
+	@go build -o ./bin/mockery ./vendor/github.com/vektra/mockery/cmd/mockery/
+endif
+	@go generate ./internal/service/... ./internal/storage/...

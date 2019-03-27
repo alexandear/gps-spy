@@ -6,13 +6,16 @@ import (
 	"testing"
 
 	"github.com/icrowley/fake"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
 	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
-	"github.com/devchallenge/spy-api/internal/model"
+	handlerMock "github.com/devchallenge/spy-api/internal/service/handler/mock"
 )
 
-func TestHandler_AddLocation(t *testing.T) {
+//go:generate mockery -case=underscore -dir=. -outpkg=mock -output=./mock -recursive -all
+
+func TestHandler_PostBbinputHandler(t *testing.T) {
 	number := fake.Phone()
 	imei := fake.CharactersN(10)
 	longitude := fake.Longitude()
@@ -115,7 +118,9 @@ func TestHandler_AddLocation(t *testing.T) {
 			},
 		} {
 			t.Run(name, func(t *testing.T) {
-				h := New(&storageStub{})
+				gm := &handlerMock.GPS{}
+				gm.On("Add", mock.Anything, mock.Anything, mock.Anything).Return(nil)
+				h := New(gm)
 				httpReq := http.Request{}
 				params := operations.PostBbinputParams{
 					HTTPRequest: httpReq.WithContext(context.Background()),
@@ -130,11 +135,4 @@ func TestHandler_AddLocation(t *testing.T) {
 			})
 		}
 	})
-}
-
-type storageStub struct {
-}
-
-func (s *storageStub) SaveLocation(*model.Location) error {
-	return nil
 }
