@@ -3,6 +3,8 @@ package gps
 import (
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/devchallenge/spy-api/internal/model"
 )
 
@@ -21,5 +23,8 @@ func New(storage Storage) *Service {
 }
 
 func (s *Service) Add(phone model.Phone, coordinate model.Coordinate, timestamp time.Time) error {
+	if err := s.storage.Save(phone, coordinate, timestamp); err != nil {
+		return errors.Wrap(err, "failed to save")
+	}
 	return nil
 }
