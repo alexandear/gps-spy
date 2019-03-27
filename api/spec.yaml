@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   title: Spy API
   version: "1.0.0"
-  description: Monitoring for the mobile phones' moves
+  description: Monitoring for mobile phones' moves
 basePath: /ourell
 schemes:
   - http

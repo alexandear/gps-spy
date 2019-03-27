@@ -43,7 +43,7 @@ clean:
 
 test:
 	@echo test
-	@go test -race -count=1 -v ./...
+	@CGO_ENABLED=0 go test -count=1 -v ./...
 
 format:
 	@echo format
