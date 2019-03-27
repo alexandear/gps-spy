@@ -14,11 +14,61 @@ Unit tests are inside docker container and run automatically during container bu
 
 ## API Description
 
-Monitoring for mobile phones' moves
+Full documentation in the Open API format can be found in the file `./api/spec.yaml`.
+So, interactive documentation is available. Install `make`, `swagger` and run `make doc` to open documentation in browser.
 
-<!-- markdown-swagger -->
-  Everything here will be replaced by markdown-swagger
-<!-- /markdown-swagger -->
+### POST /bbinput
 
-Also, interactive swagger documentation is available.
-Install `make`, `swagger` and run `make doc` to open documentation in browser.
+Accepts GPS coordinates from the mobile and saves them to the database
+
+#### Parameters
+
+All parameters located in **body**.
+
+Content-Type: **application/json**.
+
+Parameters:
+
+| Name        | Required | Type   | Description|
+| ----------- | -------- | ------ | ---------- |
+| number      | Yes      | string | Phone      |
+| ip          | No       | string | IP address |
+| imei        | Yes      | string | IMEI       |
+| timestamp   | No       | string | EET timestamp in "YYYY/MM/DD-hh:mm:ss" format |
+| coordinates | Yes      | object | GPS coordinates of the phone's location       |
+
+**coordinates**:
+
+| Name      | Required | Type   | Description          |
+| --------- | -------- | ------ | -------------------- |
+| longitude | Yes      | number | Longitude in degrees |
+| latitude  | Yes      | number | Latitude in degrees  |
+
+#### Body example
+
+```
+{
+    "number": "+380991926482",
+    "ip": "35.25.21.123",
+    "imei": "502507345219189",
+    "timestamp": "2019/03/22-15:50:20",
+    "coordinates": {
+        "longitude": 22.1832284135991,
+        "latitude": 60.4538416572538
+    }
+}
+```
+
+#### Responses
+
+| Code | Description           | Schema          |
+| ---- | --------------------- | ----------------|
+| 200  | OK. Coordinates saved |                 |
+| 400  | Invalid arguments     | [Error](#error) |
+| 500  | General server error  | [Error](#error) |
+
+**Error**:
+
+| Name    | Type   | Required |
+| ------- | ------ | -------- |
+| message | string | Yes      |
