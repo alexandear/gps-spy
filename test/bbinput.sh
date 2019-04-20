@@ -3,7 +3,6 @@
 curl -X POST \
   http://localhost:8080/ourell/bbinput \
   -H 'Content-Type: application/json' \
-  -H 'cache-control: no-cache' \
   -d '{
     "number": "+380991926482",
     "ip": "35.25.21.123",

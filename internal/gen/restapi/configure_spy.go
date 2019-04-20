@@ -36,6 +36,9 @@ func configureAPI(api *operations.SpyAPI) http.Handler {
 	api.PostBbinputHandler = operations.PostBbinputHandlerFunc(func(params operations.PostBbinputParams) middleware.Responder {
 		return middleware.NotImplemented("operation .PostBbinput has not yet been implemented")
 	})
+	api.PostBbsHandler = operations.PostBbsHandlerFunc(func(params operations.PostBbsParams) middleware.Responder {
+		return middleware.NotImplemented("operation .PostBbs has not yet been implemented")
+	})
 
 	api.ServerShutdown = func() {}
 

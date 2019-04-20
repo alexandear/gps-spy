@@ -6,12 +6,13 @@ info:
 basePath: /ourell
 schemes:
   - http
+consumes:
+  - application/json
+
 paths:
   /bbinput:
     post:
       summary: Accepts GPS coordinates from the mobile and saves them to the database
-      consumes:
-        - application/json
       parameters:
         - in: body
           name: body
@@ -25,8 +26,7 @@ paths:
               coordinates: [22.1832284135991, 60.4538416572538]
             properties:
               number:
-                type: string
-                description: Phone
+                $ref: "#/definitions/Number"
               imei:
                 type: string
                 description: Device identificator
@@ -67,6 +67,53 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /bbs:
+    post:
+      summary: Shows how much time two phones are located in the same room
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              number1:
+                $ref: "#/definitions/Number"
+              number2:
+                $ref: "#/definitions/Number"
+              from:
+                $ref: "#/definitions/Timestamp"
+              to:
+                $ref: "#/definitions/Timestamp"
+              minDistance:
+                description: Distance in meters
+                type: number
+                format: int32
+            required:
+              - number1
+              - number2
+              - from
+              - to
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              percentage:
+                description: >-
+                  The number of off-hours (excluding the interval from 9 to 18)
+                  that people spend together
+                type: number
+                format: int32
+        400:
+          description: Invalid arguments
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: General server error
+          schema:
+            $ref: '#/definitions/Error'
+
 definitions:
   # Schema for error response body
   Error:
@@ -80,4 +127,8 @@ definitions:
   Timestamp:
     type: string
     description: EET timestamp in "YYYY/MM/DD-hh:mm:ss" format
+
+  Number:
+    type: string
+    description: Phone number
 

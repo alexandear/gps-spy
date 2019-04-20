@@ -14,6 +14,7 @@ import (
 	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
 	"github.com/devchallenge/spy-api/internal/service/gps"
 	"github.com/devchallenge/spy-api/internal/service/handler"
+	"github.com/devchallenge/spy-api/internal/service/together"
 	"github.com/devchallenge/spy-api/internal/storage"
 )
 
@@ -42,7 +43,8 @@ var Cmd = &cobra.Command{
 
 		storage := storage.New(db)
 		gps := gps.New(storage)
-		handler := handler.New(gps)
+		together := together.New(storage)
+		handler := handler.New(gps, together)
 		handler.ConfigureHandlers(api)
 		if err := server.Serve(); err != nil {
 			return errors.Wrap(err, "failed to serve")

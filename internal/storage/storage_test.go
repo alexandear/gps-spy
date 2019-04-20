@@ -32,7 +32,7 @@ func TestStorage_Save(t *testing.T) {
 		err := s.Save(phone, coordinate, timestamp)
 
 		require.NoError(t, err)
-		items, err := s.Read(number)
+		items, err := s.read(number)
 		require.NoError(t, err)
 		require.Len(t, items, 1)
 		assert.Equal(t, &item{
@@ -65,7 +65,7 @@ func TestStorage_Save(t *testing.T) {
 			Latitude:  fake.Latitude(),
 		}, time.Now().UTC().Add(time.Hour)))
 
-		items, err := s.Read(number)
+		items, err := s.read(number)
 
 		require.NoError(t, err)
 		require.Len(t, items, 1)
@@ -78,7 +78,7 @@ func TestStorage_Save(t *testing.T) {
 	})
 }
 
-func TestStorage_Read(t *testing.T) {
+func TestStorage_read(t *testing.T) {
 	s := initStorage(t)
 
 	t.Run("success", func(t *testing.T) {
@@ -95,7 +95,7 @@ func TestStorage_Read(t *testing.T) {
 		timestamp := time.Now().UTC()
 		require.NoError(t, s.Save(phone, coordinate, timestamp))
 
-		items, err := s.Read(number)
+		items, err := s.read(number)
 
 		require.NoError(t, err)
 		require.Len(t, items, 1)

@@ -9,6 +9,8 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
+	"github.com/devchallenge/spy-api/internal/gen/models"
+
 	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
 	handlerMock "github.com/devchallenge/spy-api/internal/service/handler/mock"
 )
@@ -16,7 +18,7 @@ import (
 //go:generate mockery -case=underscore -dir=. -outpkg=mock -output=./mock -recursive -all
 
 func TestHandler_PostBbinputHandler(t *testing.T) {
-	number := fake.Phone()
+	number := models.Number(fake.Phone())
 	imei := fake.CharactersN(10)
 	longitude := fake.Longitude()
 	latitude := fake.Latitude()
@@ -29,7 +31,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 		}{
 			"empty number": {
 				body: operations.PostBbinputBody{
-					Number: nil,
+					Number: "",
 					Imei:   &imei,
 					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
@@ -39,7 +41,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			},
 			"empty imei": {
 				body: operations.PostBbinputBody{
-					Number: &number,
+					Number: number,
 					Imei:   nil,
 					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
@@ -49,14 +51,14 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			},
 			"empty coordinates": {
 				body: operations.PostBbinputBody{
-					Number:      &number,
+					Number:      number,
 					Imei:        &imei,
 					Coordinates: nil,
 				},
 			},
 			"empty longitude": {
 				body: operations.PostBbinputBody{
-					Number: &number,
+					Number: number,
 					Imei:   &imei,
 					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: nil,
@@ -66,7 +68,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			},
 			"empty latitude": {
 				body: operations.PostBbinputBody{
-					Number: &number,
+					Number: number,
 					Imei:   &imei,
 					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
@@ -76,7 +78,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			},
 			"wrong longitude": {
 				body: operations.PostBbinputBody{
-					Number: &number,
+					Number: number,
 					Imei:   &imei,
 					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &wrongLongitude,
@@ -86,7 +88,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			},
 			"wrong latitude": {
 				body: operations.PostBbinputBody{
-					Number: &number,
+					Number: number,
 					Imei:   &imei,
 					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
@@ -96,7 +98,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			},
 			"wrong ip": {
 				body: operations.PostBbinputBody{
-					Number: &number,
+					Number: number,
 					Imei:   &imei,
 					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
@@ -107,7 +109,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			},
 			"wrong timestamp": {
 				body: operations.PostBbinputBody{
-					Number: &number,
+					Number: number,
 					Imei:   &imei,
 					Coordinates: &operations.PostBbinputParamsBodyCoordinates{
 						Longitude: &longitude,
@@ -120,7 +122,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			t.Run(name, func(t *testing.T) {
 				gm := &handlerMock.GPS{}
 				gm.On("Add", mock.Anything, mock.Anything, mock.Anything).Return(nil)
-				h := New(gm)
+				h := &Handler{gps: gm}
 				httpReq := http.Request{}
 				params := operations.PostBbinputParams{
 					HTTPRequest: httpReq.WithContext(context.Background()),

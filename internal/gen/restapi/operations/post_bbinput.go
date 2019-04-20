@@ -78,9 +78,9 @@ type PostBbinputBody struct {
 	// Optional IP address
 	IP string `json:"ip,omitempty"`
 
-	// Phone
+	// number
 	// Required: true
-	Number *string `json:"number"`
+	Number models.Number `json:"number"`
 
 	// timestamp
 	Timestamp models.Timestamp `json:"timestamp,omitempty"`
@@ -141,7 +141,10 @@ func (o *PostBbinputBody) validateImei(formats strfmt.Registry) error {
 
 func (o *PostBbinputBody) validateNumber(formats strfmt.Registry) error {
 
-	if err := validate.Required("body"+"."+"number", "body", o.Number); err != nil {
+	if err := o.Number.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("body" + "." + "number")
+		}
 		return err
 	}
 

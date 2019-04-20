@@ -40,6 +40,9 @@ func NewSpyAPI(spec *loads.Document) *SpyAPI {
 		PostBbinputHandler: PostBbinputHandlerFunc(func(params PostBbinputParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostBbinput has not yet been implemented")
 		}),
+		PostBbsHandler: PostBbsHandlerFunc(func(params PostBbsParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostBbs has not yet been implemented")
+		}),
 	}
 }
 
@@ -73,6 +76,8 @@ type SpyAPI struct {
 
 	// PostBbinputHandler sets the operation handler for the post bbinput operation
 	PostBbinputHandler PostBbinputHandler
+	// PostBbsHandler sets the operation handler for the post bbs operation
+	PostBbsHandler PostBbsHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -138,6 +143,10 @@ func (o *SpyAPI) Validate() error {
 
 	if o.PostBbinputHandler == nil {
 		unregistered = append(unregistered, "PostBbinputHandler")
+	}
+
+	if o.PostBbsHandler == nil {
+		unregistered = append(unregistered, "PostBbsHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -242,6 +251,11 @@ func (o *SpyAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/bbinput"] = NewPostBbinput(o.context, o.PostBbinputHandler)
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/bbs"] = NewPostBbs(o.context, o.PostBbsHandler)
 
 }
 

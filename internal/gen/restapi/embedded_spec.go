@@ -18,6 +18,9 @@ var (
 
 func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
+  "consumes": [
+    "application/json"
+  ],
   "schemes": [
     "http"
   ],
@@ -31,9 +34,6 @@ func init() {
   "paths": {
     "/bbinput": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
         "summary": "Accepts GPS coordinates from the mobile and saves them to the database",
         "parameters": [
           {
@@ -76,8 +76,7 @@ func init() {
                   "type": "string"
                 },
                 "number": {
-                  "description": "Phone",
-                  "type": "string"
+                  "$ref": "#/definitions/Number"
                 },
                 "timestamp": {
                   "$ref": "#/definitions/Timestamp"
@@ -99,6 +98,72 @@ func init() {
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "General server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/bbs": {
+      "post": {
+        "summary": "Shows how much time two phones are located in the same room",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "number1",
+                "number2",
+                "from",
+                "to"
+              ],
+              "properties": {
+                "from": {
+                  "$ref": "#/definitions/Timestamp"
+                },
+                "minDistance": {
+                  "description": "Distance in meters",
+                  "type": "number",
+                  "format": "int32"
+                },
+                "number1": {
+                  "$ref": "#/definitions/Number"
+                },
+                "number2": {
+                  "$ref": "#/definitions/Number"
+                },
+                "to": {
+                  "$ref": "#/definitions/Timestamp"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "percentage": {
+                  "description": "The number of off-hours (excluding the interval from 9 to 18) that people spend together",
+                  "type": "number",
+                  "format": "int32"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid arguments",
@@ -128,6 +193,10 @@ func init() {
         }
       }
     },
+    "Number": {
+      "description": "Phone number",
+      "type": "string"
+    },
     "Timestamp": {
       "description": "EET timestamp in \"YYYY/MM/DD-hh:mm:ss\" format",
       "type": "string"
@@ -135,6 +204,9 @@ func init() {
   }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
+  "consumes": [
+    "application/json"
+  ],
   "schemes": [
     "http"
   ],
@@ -148,9 +220,6 @@ func init() {
   "paths": {
     "/bbinput": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
         "summary": "Accepts GPS coordinates from the mobile and saves them to the database",
         "parameters": [
           {
@@ -193,8 +262,7 @@ func init() {
                   "type": "string"
                 },
                 "number": {
-                  "description": "Phone",
-                  "type": "string"
+                  "$ref": "#/definitions/Number"
                 },
                 "timestamp": {
                   "$ref": "#/definitions/Timestamp"
@@ -231,6 +299,72 @@ func init() {
           }
         }
       }
+    },
+    "/bbs": {
+      "post": {
+        "summary": "Shows how much time two phones are located in the same room",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "number1",
+                "number2",
+                "from",
+                "to"
+              ],
+              "properties": {
+                "from": {
+                  "$ref": "#/definitions/Timestamp"
+                },
+                "minDistance": {
+                  "description": "Distance in meters",
+                  "type": "number",
+                  "format": "int32"
+                },
+                "number1": {
+                  "$ref": "#/definitions/Number"
+                },
+                "number2": {
+                  "$ref": "#/definitions/Number"
+                },
+                "to": {
+                  "$ref": "#/definitions/Timestamp"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "percentage": {
+                  "description": "The number of off-hours (excluding the interval from 9 to 18) that people spend together",
+                  "type": "number",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "General server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -244,6 +378,10 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "Number": {
+      "description": "Phone number",
+      "type": "string"
     },
     "Timestamp": {
       "description": "EET timestamp in \"YYYY/MM/DD-hh:mm:ss\" format",

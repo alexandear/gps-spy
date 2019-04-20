@@ -48,7 +48,22 @@ func (s *Storage) Save(phone model.Phone, coordinate model.Coordinate, timestamp
 	return nil
 }
 
-func (s *Storage) Read(number string) ([]*item, error) {
+func (s *Storage) Read(number string) ([]model.Together, error) {
+	items, err := s.read(number)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to read")
+	}
+	res := make([]model.Together, 0, len(items))
+	for _, item := range items {
+		res = append(res, model.Together{
+			Timestamp:  item.Timestamp,
+			Coordinate: item.Coordinate,
+		})
+	}
+	return []model.Together{}, nil
+}
+
+func (s *Storage) read(number string) ([]*item, error) {
 	var items []*item
 	if err := s.db.View(func(tx *buntdb.Tx) error {
 		return tx.Ascend("", func(key, value string) bool {

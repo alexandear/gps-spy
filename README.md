@@ -11,6 +11,7 @@ Server for monitoring of mobile phones' moves.
 ## How To Run Tests
 
 Unit tests are inside docker container and run automatically during container build.
+Manual curl tests can be found inside `test` folder.
 
 ## API Description
 
