@@ -7,6 +7,8 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/pkg/errors"
 
+	"github.com/devchallenge/spy-api/internal/model"
+
 	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
 )
 
@@ -32,15 +34,14 @@ func (h *Handler) PostBbsHandler(params operations.PostBbsParams) middleware.Res
 	} else {
 		to = ts
 	}
-	if to.Before(from) {
-		return newPostBbsBadRequest("to must be greater from")
-	}
 	distance := int(body.MinDistance)
 	switch percentage, err := h.together.SpendPercentage(number1, number2, from, to, distance); errors.Cause(err) {
 	case nil:
 		return operations.NewPostBbsOK().WithPayload(&operations.PostBbsOKBody{
 			Percentage: int32(percentage),
 		})
+	case model.ErrInvalidArgument:
+		return newPostBbsBadRequest(err.Error())
 	default:
 		return operations.NewPostBbsInternalServerError().WithPayload(newError("failed to get spend percentage"))
 	}

@@ -50,8 +50,9 @@ func TestHandler_PostBbsHandler(t *testing.T) {
 		})
 
 		require.NotNil(t, resp)
-		_, ok := resp.(*operations.PostBbsOK)
-		assert.True(t, ok)
+		bbsOK, ok := resp.(*operations.PostBbsOK)
+		require.True(t, ok)
+		assert.True(t, bbsOK.Payload.Percentage <= 100)
 	})
 }
 
