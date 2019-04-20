@@ -38,7 +38,7 @@ func (s *Service) SpendPercentage(number1, number2 string, from, to time.Time, d
 	if err != nil {
 		return 0, errors.Wrap(err, "failed to read from storage for number1")
 	}
-	items2, err := s.storage.Read(number1)
+	items2, err := s.storage.Read(number2)
 	if err != nil {
 		return 0, errors.Wrap(err, "failed to read from storage for number2")
 	}
@@ -56,7 +56,7 @@ func (s *Service) SpendPercentage(number1, number2 string, from, to time.Time, d
 		distances = append(distances, distancesBetween(items2, item)...)
 	}
 
-	countAll := len(items1) + len(items2)
+	countAll := (len(items1) + len(items2)) / 2
 	countTogether := 0
 	for _, d := range distances {
 		if d < float64(distance) {
@@ -67,7 +67,7 @@ func (s *Service) SpendPercentage(number1, number2 string, from, to time.Time, d
 		return 0, nil
 	}
 
-	return countAll / countTogether, nil
+	return (countAll / countTogether) * 100, nil
 }
 
 func excludeBeforeFrom(items []model.Together, from time.Time) []model.Together {

@@ -60,7 +60,7 @@ func (s *Storage) Read(number string) ([]model.Together, error) {
 			Coordinate: item.Coordinate,
 		})
 	}
-	return []model.Together{}, nil
+	return res, nil
 }
 
 func (s *Storage) read(number string) ([]*item, error) {
