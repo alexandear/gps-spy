@@ -73,3 +73,59 @@ Parameters:
 | Name    | Type   | Required |
 | ------- | ------ | -------- |
 | message | string | Yes      |
+
+### POST /bbs
+
+Shows how much time two phones are located in the same room
+
+#### Parameters
+
+All parameters located in **body**.
+
+Content-Type: **application/json**.
+
+Parameters:
+
+| Name        | Required | Type   | Description|
+| ----------- | -------- | ------ | ---------- |
+| number1     | Yes      | string | Phone of user 1      |
+| number2     | Yes      | string | Phone of user 2      |
+| from        | Yes      | string | EET timestamp in "YYYY/MM/DD-hh:mm:ss" format |
+| to          | Yes      | string | EET timestamp in "YYYY/MM/DD-hh:mm:ss" format |
+| minDistance | Yes      | numeric | Distance in meters between users      |
+
+#### Responses
+
+| Code | Description           | Schema          |
+| ---- | --------------------- | ----------------|
+| 200  | OK.                   | [BbsSchema](#bbsSchema) |
+| 400  | Invalid arguments     | [Error](#error) |
+| 500  | General server error  | [Error](#error) |
+
+**BbsSchema**:
+
+| Name    | Type   | Required |
+| ------- | ------ | -------- |
+| percentage | number | Yes      |
+
+### POST /bbfastDrive
+
+Returns phone numbers of fast drivers
+
+#### Parameters
+
+All parameters located in **body**.
+
+Content-Type: **application/json**.
+
+Paramters:
+
+See online documentation.
+
+#### Responses
+
+| Code | Description           | Schema          |
+| ---- | --------------------- | ----------------|
+| 200  | OK.                   | [BbsSchema](#bbsSchema) |
+| 400  | Invalid arguments     | [Error](#error) |
+| 500  | General server error  | [Error](#error) |
