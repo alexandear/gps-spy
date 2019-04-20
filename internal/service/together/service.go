@@ -27,5 +27,8 @@ func (s *Service) SpendPercentage(number1, number2 string, from, to time.Time, d
 	if to.Before(from) {
 		return 0, errors.Wrap(model.ErrInvalidArgument, "to must be greater from")
 	}
+	if distance <= 0 {
+		return 0, errors.Wrap(model.ErrInvalidArgument, "distance must be greater zero")
+	}
 	return rand.Intn(101), nil
 }

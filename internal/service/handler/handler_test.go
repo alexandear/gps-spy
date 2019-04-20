@@ -3,6 +3,7 @@
 package handler_test
 
 import (
+	"math/rand"
 	"testing"
 
 	"github.com/icrowley/fake"
@@ -42,10 +43,11 @@ func TestHandler_PostBbsHandler(t *testing.T) {
 
 		resp := h.PostBbsHandler(operations.PostBbsParams{
 			Body: operations.PostBbsBody{
-				Number1: models.Number(number1),
-				Number2: models.Number(number2),
-				From:    "2019/03/22-15:50:20",
-				To:      "2020/03/22-15:50:20",
+				Number1:     models.Number(number1),
+				Number2:     models.Number(number2),
+				From:        "2019/03/22-15:50:20",
+				To:          "2020/03/22-15:50:20",
+				MinDistance: int32(rand.Intn(1000) + 1),
 			},
 		})
 
