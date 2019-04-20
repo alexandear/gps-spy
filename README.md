@@ -14,8 +14,8 @@ Unit tests are inside docker container and run automatically during container bu
 
 ## API Description
 
-Full documentation in the Open API format can be found in the file `./api/spec.yaml`.
-So, interactive documentation is available. Install `make`, `swagger` and run `make doc` to open documentation in browser.
+Server has online documentation that is accessible on `http://<host>:8080/ourell/docs`.
+Documentation in the Open API format can be found in the file `./api/spec.yaml`.
 
 ### POST /bbinput
 
