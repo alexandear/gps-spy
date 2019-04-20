@@ -23,7 +23,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "Monitoring for the mobile phones' moves",
+    "description": "Monitoring for mobile phones' moves",
     "title": "Spy API",
     "version": "1.0.0"
   },
@@ -80,8 +80,7 @@ func init() {
                   "type": "string"
                 },
                 "timestamp": {
-                  "description": "EET timestamp in \"YYYY/MM/DD-hh:mm:ss\" format",
-                  "type": "string"
+                  "$ref": "#/definitions/Timestamp"
                 }
               },
               "example": {
@@ -128,6 +127,10 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "Timestamp": {
+      "description": "EET timestamp in \"YYYY/MM/DD-hh:mm:ss\" format",
+      "type": "string"
     }
   }
 }`))
@@ -137,7 +140,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "Monitoring for the mobile phones' moves",
+    "description": "Monitoring for mobile phones' moves",
     "title": "Spy API",
     "version": "1.0.0"
   },
@@ -194,8 +197,7 @@ func init() {
                   "type": "string"
                 },
                 "timestamp": {
-                  "description": "EET timestamp in \"YYYY/MM/DD-hh:mm:ss\" format",
-                  "type": "string"
+                  "$ref": "#/definitions/Timestamp"
                 }
               },
               "example": {
@@ -242,6 +244,10 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "Timestamp": {
+      "description": "EET timestamp in \"YYYY/MM/DD-hh:mm:ss\" format",
+      "type": "string"
     }
   }
 }`))

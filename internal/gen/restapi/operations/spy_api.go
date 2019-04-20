@@ -43,7 +43,7 @@ func NewSpyAPI(spec *loads.Document) *SpyAPI {
 	}
 }
 
-/*SpyAPI Monitoring for the mobile phones' moves */
+/*SpyAPI Monitoring for mobile phones' moves */
 type SpyAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context

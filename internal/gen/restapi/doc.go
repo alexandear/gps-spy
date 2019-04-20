@@ -2,7 +2,7 @@
 
 /*
 Package restapi Spy API
-Monitoring for the mobile phones' moves
+Monitoring for mobile phones' moves
 
 
     Schemes:

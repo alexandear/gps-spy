@@ -58,8 +58,8 @@ func (h *Handler) PostBbinputHandler(params operations.PostBbinputParams) middle
 		return newPostBbinputBadRequest(err.Error())
 	}
 	timestamp := time.Time{}
-	if body.Timestamp != "" {
-		t, err := time.Parse("2006/01/02-15:04:05", body.Timestamp)
+	if string(body.Timestamp) != "" {
+		t, err := time.Parse("2006/01/02-15:04:05", string(body.Timestamp))
 		if err != nil {
 			return newPostBbinputBadRequest("timestamp must be in format 'YYYY/MM/DD-hh:mm:ss'")
 		}

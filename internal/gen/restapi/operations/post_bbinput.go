@@ -13,6 +13,8 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 	swag "github.com/go-openapi/swag"
 	validate "github.com/go-openapi/validate"
+
+	models "github.com/devchallenge/spy-api/internal/gen/models"
 )
 
 // PostBbinputHandlerFunc turns a function with the right signature into a post bbinput handler
@@ -80,8 +82,8 @@ type PostBbinputBody struct {
 	// Required: true
 	Number *string `json:"number"`
 
-	// EET timestamp in "YYYY/MM/DD-hh:mm:ss" format
-	Timestamp string `json:"timestamp,omitempty"`
+	// timestamp
+	Timestamp models.Timestamp `json:"timestamp,omitempty"`
 }
 
 // Validate validates this post bbinput body
@@ -97,6 +99,10 @@ func (o *PostBbinputBody) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := o.validateNumber(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateTimestamp(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -136,6 +142,22 @@ func (o *PostBbinputBody) validateImei(formats strfmt.Registry) error {
 func (o *PostBbinputBody) validateNumber(formats strfmt.Registry) error {
 
 	if err := validate.Required("body"+"."+"number", "body", o.Number); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *PostBbinputBody) validateTimestamp(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Timestamp) { // not required
+		return nil
+	}
+
+	if err := o.Timestamp.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("body" + "." + "timestamp")
+		}
 		return err
 	}
 

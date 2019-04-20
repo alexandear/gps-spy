@@ -34,8 +34,7 @@ paths:
                 type: string
                 description: Optional IP address
               timestamp:
-                type: string
-                description: EET timestamp in "YYYY/MM/DD-hh:mm:ss" format
+                $ref: "#/definitions/Timestamp"
               coordinates:
                 description: GPS coordinates of the phone's location
                 type: object
@@ -77,3 +76,8 @@ definitions:
         type: string
     required:
       - message
+
+  Timestamp:
+    type: string
+    description: EET timestamp in "YYYY/MM/DD-hh:mm:ss" format
+
