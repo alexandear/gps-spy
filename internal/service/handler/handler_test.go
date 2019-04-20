@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/icrowley/fake"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/tidwall/buntdb"
 
@@ -35,12 +36,22 @@ func TestHandler_PostBbsHandler(t *testing.T) {
 		s := initStorage(t)
 		defer util.Close(s)
 		h := handler.New(gps.New(s), together.New(s))
-
-		number1 := fake.Phone()
-		number2 := fake.Phone()
-
+		number1, number2 := fake.Phone(), fake.Phone()
 		bbinput(t, h, number1, 22.1832284135991, 60.4538416572538)
 		bbinput(t, h, number2, 22.1832284135992, 60.4538416572539)
+
+		resp := h.PostBbsHandler(operations.PostBbsParams{
+			Body: operations.PostBbsBody{
+				Number1: models.Number(number1),
+				Number2: models.Number(number2),
+				From:    "2019/03/22-15:50:20",
+				To:      "2020/03/22-15:50:20",
+			},
+		})
+
+		require.NotNil(t, resp)
+		_, ok := resp.(*operations.PostBbsOK)
+		assert.True(t, ok)
 	})
 }
 

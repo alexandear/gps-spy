@@ -20,7 +20,7 @@ func New(storage Storage) *Service {
 	}
 }
 
-func (s *Service) SpendPercentage(number1, number2 string, from, to time.Time) (int, error) {
+func (s *Service) SpendPercentage(number1, number2 string, from, to time.Time, distance int) (int, error) {
 	// TODO
 	return 0, nil
 }

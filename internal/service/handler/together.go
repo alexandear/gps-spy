@@ -32,7 +32,11 @@ func (h *Handler) PostBbsHandler(params operations.PostBbsParams) middleware.Res
 	} else {
 		to = ts
 	}
-	switch percentage, err := h.together.SpendPercentage(number1, number2, from, to); errors.Cause(err) {
+	if to.Before(from) {
+		return newPostBbsBadRequest("to must be greater from")
+	}
+	distance := int(body.MinDistance)
+	switch percentage, err := h.together.SpendPercentage(number1, number2, from, to, distance); errors.Cause(err) {
 	case nil:
 		return operations.NewPostBbsOK().WithPayload(&operations.PostBbsOKBody{
 			Percentage: int32(percentage),

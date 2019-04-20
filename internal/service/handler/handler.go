@@ -17,7 +17,7 @@ type GPS interface {
 }
 
 type Together interface {
-	SpendPercentage(number1, number2 string, from, to time.Time) (int, error)
+	SpendPercentage(number1, number2 string, from, to time.Time, distance int) (int, error)
 }
 
 func New(gps GPS, together Together) *Handler {
