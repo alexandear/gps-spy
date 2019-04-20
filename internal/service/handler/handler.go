@@ -4,8 +4,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/getfider/fider/app/pkg/errors"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/pkg/errors"
 
 	"github.com/devchallenge/spy-api/internal/gen/models"
 	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"

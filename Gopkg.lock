@@ -50,14 +50,6 @@
   version = "v0.3.3"
 
 [[projects]]
-  digest = "1:9b4108ac7a5ebedf41fb2ff3725c0d2f7e0541f554b125ec525bf0fc003070da"
-  name = "github.com/getfider/fider"
-  packages = ["app/pkg/errors"]
-  pruneopts = "UT"
-  revision = "ee915ea5fbabcc13002f4da90c30f6e078105ccd"
-  version = "v0.18.0"
-
-[[projects]]
   branch = "master"
   digest = "1:7fb51688eadf38272411852d7a2b3538c7caff53309abee6c0964a83c00fe69e"
   name = "github.com/globalsign/mgo"
@@ -409,7 +401,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/getfider/fider/app/pkg/errors",
     "github.com/go-openapi/errors",
     "github.com/go-openapi/loads",
     "github.com/go-openapi/runtime",
