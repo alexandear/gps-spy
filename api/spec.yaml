@@ -130,6 +130,84 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /bbfastDrive:
+    post:
+      summary: Returns phone numbers of fast drivers
+      description: >-
+        Returns users who exceeds the speed on public roads.
+        Request is used by DAI.
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              from:
+                $ref: "#/definitions/Timestamp"
+              to:
+                $ref: "#/definitions/Timestamp"
+              minLocation:
+                type: object
+                properties:
+                  # TODO move longitude and latitude to definitions
+                  longitude:
+                    description: Longitude in degrees
+                    type: number
+                    format: float
+                    minimum: -180
+                    maximum: 180
+                  latitude:
+                    description: Latitude in degrees
+                    type: number
+                    format: float
+                    minimum: -90
+                    maximum: 90
+              maxLocation:
+                type: object
+                properties:
+                  longitude:
+                    description: Longitude in degrees
+                    type: number
+                    format: float
+                    minimum: -180
+                    maximum: 180
+                  latitude:
+                    description: Latitude in degrees
+                    type: number
+                    format: float
+                    minimum: -90
+                    maximum: 90
+              minSpped:
+                description: Minimum speed in km/h
+                type: integer
+                format: int32
+              maxLen:
+                description: Maximum length
+                type: integer
+                format: int32
+            required:
+              - from
+              - to
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              phones:
+                description: Phone numbers
+                type: array
+                items:
+                  type: string
+        400:
+          description: Invalid arguments
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: General server error
+          schema:
+            $ref: '#/definitions/Error'
+
 definitions:
   # Schema for error response body
   Error:
@@ -147,4 +225,3 @@ definitions:
   Number:
     type: string
     description: Phone number
-

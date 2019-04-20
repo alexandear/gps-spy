@@ -37,6 +37,9 @@ func NewSpyAPI(spec *loads.Document) *SpyAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
+		PostBbfastDriveHandler: PostBbfastDriveHandlerFunc(func(params PostBbfastDriveParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostBbfastDrive has not yet been implemented")
+		}),
 		PostBbinputHandler: PostBbinputHandlerFunc(func(params PostBbinputParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostBbinput has not yet been implemented")
 		}),
@@ -74,6 +77,8 @@ type SpyAPI struct {
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
 
+	// PostBbfastDriveHandler sets the operation handler for the post bbfast drive operation
+	PostBbfastDriveHandler PostBbfastDriveHandler
 	// PostBbinputHandler sets the operation handler for the post bbinput operation
 	PostBbinputHandler PostBbinputHandler
 	// PostBbsHandler sets the operation handler for the post bbs operation
@@ -139,6 +144,10 @@ func (o *SpyAPI) Validate() error {
 
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
+	}
+
+	if o.PostBbfastDriveHandler == nil {
+		unregistered = append(unregistered, "PostBbfastDriveHandler")
 	}
 
 	if o.PostBbinputHandler == nil {
@@ -246,6 +255,11 @@ func (o *SpyAPI) initHandlerCache() {
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
+
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/bbfastDrive"] = NewPostBbfastDrive(o.context, o.PostBbfastDriveHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)

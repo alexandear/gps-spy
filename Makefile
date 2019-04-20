@@ -1,3 +1,6 @@
+MAKEFILE_PATH := $(abspath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+PATH := $(MAKEFILE_PATH):$(PATH)
+
 default: clean build test
 
 help:
@@ -78,3 +81,12 @@ ifeq ("$(wildcard ./bin/mockery)","")
 	@go build -o ./bin/mockery ./vendor/github.com/vektra/mockery/cmd/mockery/
 endif
 	@go generate ./internal/service/... ./internal/storage/...
+
+grpc:
+ifeq ("$(wildcard protoc-gen-go)","")
+	@go build -o protoc-gen-go ./vendor/github.com/golang/protobuf/protoc-gen-go
+endif
+	@protoc \
+		-I ./internal/service/specnomery \
+		./internal/service/specnomery/grpc.proto \
+		--go_out=plugins=grpc:./internal/service/specnomery

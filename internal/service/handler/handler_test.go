@@ -23,7 +23,7 @@ func TestHandler_PostBbinputHandlerIntegration(t *testing.T) {
 	t.Run("basic case", func(t *testing.T) {
 		s := initStorage(t)
 		defer util.Close(s)
-		h := handler.New(gps.New(s), together.New(s))
+		h := handler.New(gps.New(s), together.New(s), nil)
 
 		bbinput(t, h, models.Number(fake.Phone()), fake.Longitude(), fake.Latitude())
 		bbinput(t, h, models.Number(fake.Phone()), fake.Longitude(), fake.Latitude())
@@ -35,7 +35,7 @@ func TestHandler_PostBbsHandler(t *testing.T) {
 	t.Run("when working hours", func(t *testing.T) {
 		s := initStorage(t)
 		defer util.Close(s)
-		h := handler.New(gps.New(s), together.New(s))
+		h := handler.New(gps.New(s), together.New(s), nil)
 		number1, number2 := models.Number(fake.Phone()), models.Number(fake.Phone())
 		ts := models.Timestamp("2019/03/22-15:50:20")
 		bbinputTs(t, h, number1, 22.1832284135991, 60.4538416572538, ts)
@@ -50,7 +50,7 @@ func TestHandler_PostBbsHandler(t *testing.T) {
 	t.Run("when not working hours", func(t *testing.T) {
 		s := initStorage(t)
 		defer util.Close(s)
-		h := handler.New(gps.New(s), together.New(s))
+		h := handler.New(gps.New(s), together.New(s), nil)
 		number1, number2 := models.Number(fake.Phone()), models.Number(fake.Phone())
 		ts := models.Timestamp("2019/03/22-22:50:20")
 		bbinputTs(t, h, number1, 22.1832284135991, 60.4538416572538, ts)
@@ -65,7 +65,7 @@ func TestHandler_PostBbsHandler(t *testing.T) {
 	t.Run("when too far", func(t *testing.T) {
 		s := initStorage(t)
 		defer util.Close(s)
-		h := handler.New(gps.New(s), together.New(s))
+		h := handler.New(gps.New(s), together.New(s), nil)
 		number1, number2 := models.Number(fake.Phone()), models.Number(fake.Phone())
 		ts := models.Timestamp("2019/03/22-22:50:20")
 		bbinputTs(t, h, number1, 22.1832284135991, 60.4538416572538, ts)

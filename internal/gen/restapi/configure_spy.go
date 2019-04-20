@@ -33,6 +33,9 @@ func configureAPI(api *operations.SpyAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	api.PostBbfastDriveHandler = operations.PostBbfastDriveHandlerFunc(func(params operations.PostBbfastDriveParams) middleware.Responder {
+		return middleware.NotImplemented("operation .PostBbfastDrive has not yet been implemented")
+	})
 	api.PostBbinputHandler = operations.PostBbinputHandlerFunc(func(params operations.PostBbinputParams) middleware.Responder {
 		return middleware.NotImplemented("operation .PostBbinput has not yet been implemented")
 	})

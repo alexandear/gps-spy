@@ -1,0 +1,14 @@
+syntax = "proto3";
+package geoAllowance;
+
+message AllowedUsersRequest {
+    string phoneNumber = 1;
+};
+
+message AllowedUsersReply {
+    bool result = 1;
+}
+
+service allowedUsers {
+    rpc check (AllowedUsersRequest) returns (AllowedUsersReply);
+}

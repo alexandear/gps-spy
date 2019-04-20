@@ -32,6 +32,110 @@ func init() {
   },
   "basePath": "/ourell",
   "paths": {
+    "/bbfastDrive": {
+      "post": {
+        "description": "Returns users who exceeds the speed on public roads. Request is used by DAI.",
+        "summary": "Returns phone numbers of fast drivers",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "from",
+                "to"
+              ],
+              "properties": {
+                "from": {
+                  "$ref": "#/definitions/Timestamp"
+                },
+                "maxLen": {
+                  "description": "Maximum length",
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "maxLocation": {
+                  "type": "object",
+                  "properties": {
+                    "latitude": {
+                      "description": "Latitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 90,
+                      "minimum": -90
+                    },
+                    "longitude": {
+                      "description": "Longitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 180,
+                      "minimum": -180
+                    }
+                  }
+                },
+                "minLocation": {
+                  "type": "object",
+                  "properties": {
+                    "latitude": {
+                      "description": "Latitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 90,
+                      "minimum": -90
+                    },
+                    "longitude": {
+                      "description": "Longitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 180,
+                      "minimum": -180
+                    }
+                  }
+                },
+                "minSpped": {
+                  "description": "Minimum speed in km/h",
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "to": {
+                  "$ref": "#/definitions/Timestamp"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "properties": {
+                "phones": {
+                  "description": "Phone numbers",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "General server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/bbinput": {
       "post": {
         "summary": "Accepts GPS coordinates from the mobile and saves them to the database",
@@ -232,6 +336,110 @@ func init() {
   },
   "basePath": "/ourell",
   "paths": {
+    "/bbfastDrive": {
+      "post": {
+        "description": "Returns users who exceeds the speed on public roads. Request is used by DAI.",
+        "summary": "Returns phone numbers of fast drivers",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "from",
+                "to"
+              ],
+              "properties": {
+                "from": {
+                  "$ref": "#/definitions/Timestamp"
+                },
+                "maxLen": {
+                  "description": "Maximum length",
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "maxLocation": {
+                  "type": "object",
+                  "properties": {
+                    "latitude": {
+                      "description": "Latitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 90,
+                      "minimum": -90
+                    },
+                    "longitude": {
+                      "description": "Longitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 180,
+                      "minimum": -180
+                    }
+                  }
+                },
+                "minLocation": {
+                  "type": "object",
+                  "properties": {
+                    "latitude": {
+                      "description": "Latitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 90,
+                      "minimum": -90
+                    },
+                    "longitude": {
+                      "description": "Longitude in degrees",
+                      "type": "number",
+                      "format": "float",
+                      "maximum": 180,
+                      "minimum": -180
+                    }
+                  }
+                },
+                "minSpped": {
+                  "description": "Minimum speed in km/h",
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "to": {
+                  "$ref": "#/definitions/Timestamp"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "properties": {
+                "phones": {
+                  "description": "Phone numbers",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid arguments",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "General server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/bbinput": {
       "post": {
         "summary": "Accepts GPS coordinates from the mobile and saves them to the database",
