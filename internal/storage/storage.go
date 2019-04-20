@@ -82,3 +82,7 @@ func (s *Storage) read(number string) ([]*item, error) {
 	}
 	return items, nil
 }
+
+func (s *Storage) Close() error {
+	return s.db.Close()
+}

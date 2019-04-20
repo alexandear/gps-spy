@@ -1,9 +1,6 @@
 package server
 
 import (
-	"io"
-	"log"
-
 	"github.com/go-openapi/loads"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -16,6 +13,7 @@ import (
 	"github.com/devchallenge/spy-api/internal/service/handler"
 	"github.com/devchallenge/spy-api/internal/service/together"
 	"github.com/devchallenge/spy-api/internal/storage"
+	"github.com/devchallenge/spy-api/internal/util"
 )
 
 var Cmd = &cobra.Command{
@@ -33,15 +31,15 @@ var Cmd = &cobra.Command{
 
 		api := operations.NewSpyAPI(swaggerSpec)
 		server := server{Server: restapi.NewServer(api)}
-		defer close(server)
+		defer util.Close(server)
 
 		db, err := buntdb.Open(":memory:")
 		if err != nil {
 			return errors.Wrap(err, "failed to open buntdb in memory")
 		}
-		defer close(db)
 
 		storage := storage.New(db)
+		defer util.Close(storage)
 		gps := gps.New(storage)
 		together := together.New(storage)
 		handler := handler.New(gps, together)
@@ -60,10 +58,4 @@ type server struct {
 
 func (s server) Close() error {
 	return s.Shutdown()
-}
-
-func close(closer io.Closer) {
-	if err := closer.Close(); err != nil {
-		log.Fatal(err)
-	}
 }
