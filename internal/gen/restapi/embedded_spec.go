@@ -39,6 +39,7 @@ func init() {
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "required": [
@@ -121,22 +122,26 @@ func init() {
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "required": [
                 "number1",
                 "number2",
                 "from",
-                "to"
+                "to",
+                "minDistance"
               ],
               "properties": {
                 "from": {
                   "$ref": "#/definitions/Timestamp"
                 },
                 "minDistance": {
-                  "description": "Distance in meters",
+                  "description": "Distance in meters. Maximum value is Earth equator.",
                   "type": "number",
-                  "format": "int32"
+                  "format": "int32",
+                  "maximum": 40008000,
+                  "minimum": 0
                 },
                 "number1": {
                   "$ref": "#/definitions/Number"
@@ -147,6 +152,13 @@ func init() {
                 "to": {
                   "$ref": "#/definitions/Timestamp"
                 }
+              },
+              "example": {
+                "from": "2019/03/22-15:50:20",
+                "minDistance": 10,
+                "number1": "+380991926482",
+                "number2": "+380923403424",
+                "to": "2020/03/22-15:50:20"
               }
             }
           }
@@ -158,9 +170,11 @@ func init() {
               "type": "object",
               "properties": {
                 "percentage": {
-                  "description": "The number of off-hours (excluding the interval from 9 to 18) that people spend together",
+                  "description": "The percentage of off-hours that people spend together (excluding the interval from 9 to 18). Value is in range [0, 100].",
                   "type": "number",
-                  "format": "int32"
+                  "format": "int32",
+                  "maximum": 100,
+                  "minimum": 0
                 }
               }
             }
@@ -225,6 +239,7 @@ func init() {
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "required": [
@@ -307,22 +322,26 @@ func init() {
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "required": [
                 "number1",
                 "number2",
                 "from",
-                "to"
+                "to",
+                "minDistance"
               ],
               "properties": {
                 "from": {
                   "$ref": "#/definitions/Timestamp"
                 },
                 "minDistance": {
-                  "description": "Distance in meters",
+                  "description": "Distance in meters. Maximum value is Earth equator.",
                   "type": "number",
-                  "format": "int32"
+                  "format": "int32",
+                  "maximum": 40008000,
+                  "minimum": 0
                 },
                 "number1": {
                   "$ref": "#/definitions/Number"
@@ -333,6 +352,13 @@ func init() {
                 "to": {
                   "$ref": "#/definitions/Timestamp"
                 }
+              },
+              "example": {
+                "from": "2019/03/22-15:50:20",
+                "minDistance": 10,
+                "number1": "+380991926482",
+                "number2": "+380923403424",
+                "to": "2020/03/22-15:50:20"
               }
             }
           }
@@ -344,9 +370,11 @@ func init() {
               "type": "object",
               "properties": {
                 "percentage": {
-                  "description": "The number of off-hours (excluding the interval from 9 to 18) that people spend together",
+                  "description": "The percentage of off-hours that people spend together (excluding the interval from 9 to 18). Value is in range [0, 100].",
                   "type": "number",
-                  "format": "int32"
+                  "format": "int32",
+                  "maximum": 100,
+                  "minimum": 0
                 }
               }
             }

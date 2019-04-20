@@ -114,14 +114,14 @@ func bbs(t *testing.T, h *handler.Handler, number1, number2 models.Number, from,
 			Number2:     number2,
 			From:        from,
 			To:          to,
-			MinDistance: minDistance,
+			MinDistance: &minDistance,
 		},
 	})
 
 	require.NotNil(t, resp)
 	bbsOK, ok := resp.(*operations.PostBbsOK)
 	require.True(t, ok)
-	return int(bbsOK.Payload.Percentage)
+	return int(*bbsOK.Payload.Percentage)
 }
 
 func initStorage(t *testing.T) *storage.Storage {

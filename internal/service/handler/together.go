@@ -34,11 +34,12 @@ func (h *Handler) PostBbsHandler(params operations.PostBbsParams) middleware.Res
 	} else {
 		to = ts
 	}
-	distance := int(body.MinDistance)
-	switch percentage, err := h.together.SpendPercentage(number1, number2, from, to, distance); errors.Cause(err) {
+	distance := int(*body.MinDistance)
+	switch p, err := h.together.SpendPercentage(number1, number2, from, to, distance); errors.Cause(err) {
 	case nil:
+		percentage := int32(p)
 		return operations.NewPostBbsOK().WithPayload(&operations.PostBbsOKBody{
-			Percentage: int32(percentage),
+			Percentage: &percentage,
 		})
 	case model.ErrInvalidArgument:
 		return newPostBbsBadRequest(err.Error())

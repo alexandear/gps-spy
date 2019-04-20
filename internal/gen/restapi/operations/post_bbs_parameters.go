@@ -6,6 +6,7 @@ package operations
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"io"
 	"net/http"
 
 	"github.com/go-openapi/errors"
@@ -30,6 +31,7 @@ type PostBbsParams struct {
 	HTTPRequest *http.Request `json:"-"`
 
 	/*
+	  Required: true
 	  In: body
 	*/
 	Body PostBbsBody
@@ -48,7 +50,11 @@ func (o *PostBbsParams) BindRequest(r *http.Request, route *middleware.MatchedRo
 		defer r.Body.Close()
 		var body PostBbsBody
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
-			res = append(res, errors.NewParseError("body", "body", "", err))
+			if err == io.EOF {
+				res = append(res, errors.Required("body", "body"))
+			} else {
+				res = append(res, errors.NewParseError("body", "body", "", err))
+			}
 		} else {
 			// validate body object
 			if err := body.Validate(route.Formats); err != nil {
@@ -59,6 +65,8 @@ func (o *PostBbsParams) BindRequest(r *http.Request, route *middleware.MatchedRo
 				o.Body = body
 			}
 		}
+	} else {
+		res = append(res, errors.Required("body", "body"))
 	}
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

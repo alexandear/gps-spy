@@ -12,6 +12,7 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	strfmt "github.com/go-openapi/strfmt"
 	swag "github.com/go-openapi/swag"
+	validate "github.com/go-openapi/validate"
 
 	models "github.com/devchallenge/spy-api/internal/gen/models"
 )
@@ -70,8 +71,11 @@ type PostBbsBody struct {
 	// Required: true
 	From models.Timestamp `json:"from"`
 
-	// Distance in meters
-	MinDistance int32 `json:"minDistance,omitempty"`
+	// Distance in meters. Maximum value is Earth equator.
+	// Required: true
+	// Maximum: 4.0008e+07
+	// Minimum: 0
+	MinDistance *int32 `json:"minDistance"`
 
 	// number1
 	// Required: true
@@ -91,6 +95,10 @@ func (o *PostBbsBody) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := o.validateFrom(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateMinDistance(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -118,6 +126,23 @@ func (o *PostBbsBody) validateFrom(formats strfmt.Registry) error {
 		if ve, ok := err.(*errors.Validation); ok {
 			return ve.ValidateName("body" + "." + "from")
 		}
+		return err
+	}
+
+	return nil
+}
+
+func (o *PostBbsBody) validateMinDistance(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"minDistance", "body", o.MinDistance); err != nil {
+		return err
+	}
+
+	if err := validate.Minimum("body"+"."+"minDistance", "body", float64(*o.MinDistance), 0, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("body"+"."+"minDistance", "body", float64(*o.MinDistance), 4.0008e+07, false); err != nil {
 		return err
 	}
 
@@ -182,12 +207,40 @@ func (o *PostBbsBody) UnmarshalBinary(b []byte) error {
 // swagger:model PostBbsOKBody
 type PostBbsOKBody struct {
 
-	// The number of off-hours (excluding the interval from 9 to 18) that people spend together
-	Percentage int32 `json:"percentage,omitempty"`
+	// The percentage of off-hours that people spend together (excluding the interval from 9 to 18). Value is in range [0, 100].
+	// Maximum: 100
+	// Minimum: 0
+	Percentage *int32 `json:"percentage,omitempty"`
 }
 
 // Validate validates this post bbs o k body
 func (o *PostBbsOKBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validatePercentage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PostBbsOKBody) validatePercentage(formats strfmt.Registry) error {
+
+	if swag.IsZero(o.Percentage) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("postBbsOK"+"."+"percentage", "body", float64(*o.Percentage), 0, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("postBbsOK"+"."+"percentage", "body", float64(*o.Percentage), 100, false); err != nil {
+		return err
+	}
+
 	return nil
 }
 
