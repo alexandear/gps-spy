@@ -22,7 +22,7 @@ type Together interface {
 }
 
 type Violator interface {
-	Numbers() ([]string, error)
+	Numbers(from, to time.Time, minSpeed int, minCoordinate, maxCoordinate model.Coordinate) ([]string, error)
 }
 
 func New(gps GPS, together Together, violator Violator) *Handler {

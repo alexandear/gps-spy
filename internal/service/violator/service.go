@@ -2,9 +2,11 @@ package violator
 
 import (
 	"context"
+	"time"
 
 	"google.golang.org/grpc"
 
+	"github.com/devchallenge/spy-api/internal/model"
 	"github.com/devchallenge/spy-api/internal/service/specnomery"
 )
 
@@ -22,6 +24,7 @@ func New(specnomery Specnomery) *Service {
 	}
 }
 
-func (s *Service) Numbers() ([]string, error) {
+func (s *Service) Numbers(from, to time.Time, minSpeed int, minCoordinate, maxCoordinate model.Coordinate) ([]string, error) {
+	// TODO
 	return []string{}, nil
 }

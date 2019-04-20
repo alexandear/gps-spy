@@ -1,4 +1,4 @@
-package handler
+package handler_test
 
 import (
 	"context"
@@ -10,14 +10,27 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/devchallenge/spy-api/internal/gen/models"
-
 	"github.com/devchallenge/spy-api/internal/gen/restapi/operations"
+	"github.com/devchallenge/spy-api/internal/service/gps"
+	"github.com/devchallenge/spy-api/internal/service/handler"
 	handlerMock "github.com/devchallenge/spy-api/internal/service/handler/mock"
+	"github.com/devchallenge/spy-api/internal/service/together"
+	"github.com/devchallenge/spy-api/internal/util"
 )
 
 //go:generate mockery -case=underscore -dir=. -outpkg=mock -output=./mock -recursive -all
 
 func TestHandler_PostBbinputHandler(t *testing.T) {
+	t.Run("basic case", func(t *testing.T) {
+		s := initStorage(t)
+		defer util.Close(s)
+		h := handler.New(gps.New(s), together.New(s), nil)
+
+		bbinput(t, h, models.Number(fake.Phone()), fake.Longitude(), fake.Latitude())
+		bbinput(t, h, models.Number(fake.Phone()), fake.Longitude(), fake.Latitude())
+		bbinput(t, h, models.Number(fake.Phone()), fake.Longitude(), fake.Latitude())
+	})
+
 	number := models.Number(fake.Phone())
 	imei := fake.CharactersN(10)
 	longitude := fake.Longitude()
@@ -122,7 +135,7 @@ func TestHandler_PostBbinputHandler(t *testing.T) {
 			t.Run(name, func(t *testing.T) {
 				gm := &handlerMock.GPS{}
 				gm.On("Add", mock.Anything, mock.Anything, mock.Anything).Return(nil)
-				h := &Handler{gps: gm}
+				h := handler.New(gm, nil, nil)
 				httpReq := http.Request{}
 				params := operations.PostBbinputParams{
 					HTTPRequest: httpReq.WithContext(context.Background()),
