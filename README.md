@@ -1,5 +1,7 @@
 # spy-api
 
+[![Build Status](https://travis-ci.org/alexandear/spy-api.svg?branch=master)](https://travis-ci.org/alexandear/spy-api)
+
 Server for monitoring of mobile phones' moves.
 
 ## How to Run Service
