@@ -13,3 +13,6 @@
 
 .idea/
 bin/
+
+protoc-gen-go
+
