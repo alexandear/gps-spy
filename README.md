@@ -120,7 +120,7 @@ All parameters located in **body**.
 
 Content-Type: **application/json**.
 
-Paramters:
+Parameters:
 
 See online documentation.
 
